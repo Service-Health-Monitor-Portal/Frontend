@@ -1,17 +1,8 @@
-import { Outlet, Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
+import { Route, createBrowserRouter, createRoutesFromElements } from "react-router-dom";
 import Dashboard from "../pages/Dashboard";
 import AddService from "../pages/AddService";
 import Home from "../pages/Home";
-import Sidebar from "../components/Dashboard/Sidebar";
-
-const DashboardLayout = () => {
-    return (
-        <div className="flex min-h-screen">
-            <Sidebar />
-            <Outlet />
-        </div>
-    )
-}
+import DashboardLayout from "../pages/DashboardLayout";
 
 const router = createBrowserRouter(
     createRoutesFromElements(

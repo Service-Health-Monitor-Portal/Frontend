@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-interface IProps {}
-
-const Home = ({}: IProps) => {
+const Home = () => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center justify-center h-screen" >
