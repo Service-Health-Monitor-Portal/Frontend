@@ -1,11 +1,10 @@
-interface IProps {
+import AddServiceForm from "../components/AddService/AddServiceForm"
 
-}
 
-const AddService = ({}: IProps) => {
+const AddService = () => {
   return (
     <div>
-        Add Service
+       <AddServiceForm/> 
     </div>
   )
 }
