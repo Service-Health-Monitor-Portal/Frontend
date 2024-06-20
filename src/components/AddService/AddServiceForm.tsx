@@ -25,12 +25,14 @@ const AddServiceForm = () => {
     }
     
     return (
-        <form onSubmit={handleSubmit}>
+        <form className='w-72 flex flex-col gap-2' onSubmit={handleSubmit}>
             <InputField
                 name="name"
                 type="text"
                 value={data.name}
                 onChange={handleChange}
+                text="Fault Error Rate"
+
             />
              <InputField
                 name="dependencyErrorRate"
@@ -39,6 +41,8 @@ const AddServiceForm = () => {
                 min={1}
                 max={100}
                 onChange={handleChange}
+                text="Fault Error Rate"
+
             />
            
            <InputField
@@ -48,6 +52,8 @@ const AddServiceForm = () => {
                 min={1}
                 max={100}
                 onChange={handleChange}
+                text="Fault Error Rate"
+
             />
              <InputField
                 name="throttlingErrorRate"
@@ -56,6 +62,8 @@ const AddServiceForm = () => {
                 min={1}
                 max={100}
                 onChange={handleChange}
+                text="Fault Error Rate"
+
             />
              <InputField
                 name="faultErrorRate"
@@ -64,6 +72,7 @@ const AddServiceForm = () => {
                 min={1}
                 max={100}
                 onChange={handleChange}
+                text="Fault Error Rate"
             />
             <Button name="Add Service"><Plus /></Button>
         </form>

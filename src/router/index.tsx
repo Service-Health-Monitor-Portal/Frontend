@@ -3,7 +3,6 @@ import Dashboard from "../pages/Dashboard";
 import AddService from "../pages/AddService";
 import Home from "../pages/Home";
 import DashboardLayout from "../pages/DashboardLayout";
-import AddServiceLayout from "../pages/AddServiceLayout";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -13,9 +12,7 @@ const router = createBrowserRouter(
                 <Route index element={<Dashboard />} />
                 <Route path=":id" element={<Dashboard />} />
             </Route>
-            <Route path="/add-service" element={<AddServiceLayout />} >
-            <Route index element={<AddService />} />
-            </Route>
+            <Route path="/add-service" element={<AddService />} />
 
             <Route path="*" element={<div>404</div>} />
         </>
