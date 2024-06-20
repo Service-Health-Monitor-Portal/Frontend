@@ -13,6 +13,7 @@ const router = createBrowserRouter(
                 <Route path=":id" element={<Dashboard />} />
             </Route>
             <Route path="/add-service" element={<AddService />} />
+
             <Route path="*" element={<div>404</div>} />
         </>
     )
