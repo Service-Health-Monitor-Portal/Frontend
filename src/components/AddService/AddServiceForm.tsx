@@ -31,8 +31,7 @@ const AddServiceForm = () => {
                 type="text"
                 value={data.name}
                 onChange={handleChange}
-                text="Fault Error Rate"
-
+                text="Service Name"
             />
              <InputField
                 name="dependencyErrorRate"
@@ -41,7 +40,7 @@ const AddServiceForm = () => {
                 min={1}
                 max={100}
                 onChange={handleChange}
-                text="Fault Error Rate"
+                text="Dependency Error Rate"
 
             />
            
@@ -52,7 +51,7 @@ const AddServiceForm = () => {
                 min={1}
                 max={100}
                 onChange={handleChange}
-                text="Fault Error Rate"
+                text="Invalid Input Error Rate"
 
             />
              <InputField
@@ -62,7 +61,7 @@ const AddServiceForm = () => {
                 min={1}
                 max={100}
                 onChange={handleChange}
-                text="Fault Error Rate"
+                text="Throttling Error Rate"
 
             />
              <InputField
