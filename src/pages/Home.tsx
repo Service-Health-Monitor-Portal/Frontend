@@ -16,7 +16,7 @@ const Home = () => {
             flawless performance
           </h1>
           <button
-            className="border border-[#E1E1E1] rounded-[30px] text-[#E1E1E1] h-[55px] w-[235px] p-2 mt-2"
+            className="border border-[#E1E1E1] rounded-[30px] text-[#E1E1E1] h-[55px] w-[235px] p-2 mt-2  hover:text-green-400"
             onClick={() => {
               navigate('/dashboard')
             }}
