@@ -1,52 +1,83 @@
-import Chart from "react-apexcharts"
-interface IProps {
+import { useEffect, useState } from "react";
+import Chart from "react-apexcharts";
+import axios from "axios";
 
-}
+interface IProps {}
 
 const ChartBox = ({}: IProps) => {
-    /*options: {
-        chart: {
-          id: "basic-bar"
-        },
-        xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
-        }
-      },
-      series: [
-        {
-          name: "series-1",
-          data: [30, 40, 45, 50, 49, 60, 70, 91]
-        }
-      ]*/
-      const state = {
-        series: [
-          {
-            name: "series-1",
-            data: [30, 70, 50, 70, 30, 30, 30, 30]
-          }
-        ],
+    const [chartData, setChartData] = useState({
+        series: [{
+            name: "Availability",
+            data: [] as number[],
+        }],
         options: {
             chart: {
-                id: "basic-bar"
-              },
-              xaxis: {
-                categories: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022]
-              },
-
-               
+                id: "availability-chart",
+            },
+            xaxis: {
+                categories: [] as string[],
+                title: {
+                    text: "Timestamp"
+                }
+            },
+            yaxis: {
+                title: {
+                    text: "Availability (%)"
+                },
+                min: 0,
+                max: 100,
+            },
+            theme: {
+                mode: "dark" as "dark" | "light" | undefined,
+            },
         },
-        
-      }
-return (
-    <div className="bg-black-opacity-08 border border-[#101C49] rounded-2xl p-4">
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://localhost:8080/influxdb/availability");
+                console.log("Data fetched:", response.data);
+                const data = response.data;
+
+                const timestamps = data.map((entry: any) => entry.timestamp);
+                const timestampsFormatted = timestamps.map((timestamp: string) => {
+                    const date = new Date(timestamp);
+                    return date.toLocaleString();
+                });
+                const availability = data.map((entry: any) => entry.availability);
+
+                setChartData({
+                    series: [{
+                        name: "Availability",
+                        data: availability,
+                    }],
+                    options: {
+                        ...chartData.options,
+                        xaxis: {
+                            ...chartData.options.xaxis,
+                            categories: timestampsFormatted,
+                        },
+                    },
+                });
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchData();
+    }, []); // Empty dependency array means this effect runs once on mount
+
+    return (
+        <div className="bg-black-opacity-08 border border-[#101C49] rounded-2xl p-4">
             <Chart
-                    options={{ ...state.options, theme: { mode: "dark" } }}
-                    series={state.series}
-                    type="line"
-                    width="500"
+                options={chartData.options}
+                series={chartData.series}
+                type="line"
+                width="800"
             />
-    </div>
-)
+        </div>
+    );
 }
 
-export default ChartBox
+export default ChartBox;
