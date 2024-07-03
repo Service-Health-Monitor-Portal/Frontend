@@ -1,17 +1,36 @@
-import { useNavigate } from "react-router-dom"
-import Button from "../UI/Button"
-import Plus from "../UI/Plus"
-import ServicesList from "./ServicesList"
+import { useNavigate } from 'react-router-dom'
+import Button from '../UI/Button'
+import Plus from '../UI/Plus'
+import ServicesList from './ServicesList'
 
-const Sidebar = () => {
-  const navigate = useNavigate();
+interface SidebarProps {
+  open: boolean
+  setOpen: (open: boolean) => void
+}
+
+const Sidebar = ({ open, setOpen }: SidebarProps) => {
+  const navigate = useNavigate()
   return (
-    <div className="flex flex-col items-center justify-around w-64 bg-gradient-to-b from-[#2C427F] to-[#101C49] py-16">
-        <h1 className="text-[#E1E1E1] text-xl font-semibold">Service tracker</h1>
-        <ServicesList />
-        <Button name="Add Service" onClick={() => navigate('/add-service')}>
-          <Plus />
-        </Button>
+    <div
+      className={`${
+        open ? 'flex' : 'hidden'
+      } fixed md:static md:flex flex-col items-center justify-between py-5 w-full md:w-64 h-full bg-gradient-to-b from-[#2C427F] to-[#101C49] flex-shrink-0 z-50`}
+      >
+      <ServicesList />
+      <button className="absolute top-4 right-4 md:hidden p-2" onClick={() => setOpen(false)}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 text-white"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <Button name="Add Service" onClick={() => navigate('/add-service')}>
+        <Plus />
+      </Button>
     </div>
   )
 }

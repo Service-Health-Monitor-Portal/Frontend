@@ -4,10 +4,10 @@ import { Toaster } from 'react-hot-toast'
 
 function App() {
   return (
-    <>
+    <div className="h-screen text-white">
       <RouterProvider router={router} />
       <Toaster />
-    </>
+    </div>
   )
 }
 
