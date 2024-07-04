@@ -5,6 +5,29 @@ import { useEffect, useState } from 'react'
 
 const Dashboard = () => {
   const id = useParams<{ id: string }>().id ?? ''
+  const [availabilityLineSeries, setAvailabilityLineSeries] = useState<any[]>([])
+  const [availabilityLineOptions, setAvailabilityLineOptions] = useState<any>({
+    chart: {
+      height: 350,
+      type: 'line',
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      curve: 'straight',
+    },
+    title: {
+      text: 'Availability',
+      align: 'left',
+    },
+    xaxis: {
+      categories: [],
+    },
+    theme: {
+      mode: 'dark',
+    },
+  })
   const [pieSeries, setPieSeries] = useState<any[]>([])
   const [pieOptions, setPieOptions] = useState<any>({
     labels: [],
@@ -12,7 +35,7 @@ const Dashboard = () => {
       show: true,
       position: 'right',
     },
-    colors: ["#00AB55", "#2D99FF", "#FFE700", "#826AF9"],
+    colors: ['#00AB55', '#2D99FF', '#FFE700', '#826AF9'],
     theme: {
       mode: 'dark',
     },
@@ -23,26 +46,53 @@ const Dashboard = () => {
   })
   useEffect(() => {
     if (data) {
-      const newPieSeries = [];
+      const newPieSeries = []
+      const newAvailabilityLineSeries: any = {}
+      console.log('data: ', data)
       for (const key in data) {
-        let sum = 0;
+        let sum = 0
         for (const key2 of data[key]) {
-          sum += key2.rate;
+          sum += key2.rate
+          if (newAvailabilityLineSeries[key2.time]) {
+            newAvailabilityLineSeries[key2.time].push({ rate: key2.rate, type: key })
+          } else {
+            newAvailabilityLineSeries[key2.time] = [{ rate: key2.rate, type: key }]
+          }
         }
-        newPieSeries.push(sum);
+        newPieSeries.push(sum)
       }
-      setPieSeries(newPieSeries);
-  
+      setPieSeries(newPieSeries)
+      const times = Object.keys(newAvailabilityLineSeries)
+      console.log('times', times)
+      const availabilityLineSeries = times.map((time) => {
+        const rateSuccess = newAvailabilityLineSeries[time].find((item: any) => item.type === 'success').rate
+        const rateDependencyError = newAvailabilityLineSeries[time].find(
+          (item: any) => item.type === 'dependencyError'
+        ).rate
+        const rateFaultError = newAvailabilityLineSeries[time].find((item: any) => item.type === 'faultError').rate
+        return rateSuccess - rateDependencyError - rateFaultError
+      })
+      const categories = times.map((time) => {
+        return new Date(time).toLocaleTimeString()
+      })
+      console.log('categories', categories)
+      setAvailabilityLineOptions({
+        ...availabilityLineOptions,
+        xaxis: {
+          categories,
+        },
+      })
+      console.log('availabilityLineSeries', availabilityLineSeries)
+      setAvailabilityLineSeries([{ name: 'Availability', data: availabilityLineSeries }])
       setPieOptions({
         ...pieOptions,
         labels: Object.keys(data),
-      });
+      })
     }
-  }, [data]);
-  console.log(data);
-  
-  
-  console.log(pieSeries);
+  }, [data])
+  console.log(data)
+
+  console.log(pieSeries)
   return (
     <div className="flex flex-col w-full h-full items-center justify-center">
       {!id ? (
@@ -50,7 +100,10 @@ const Dashboard = () => {
       ) : isLoading ? (
         <p>Loading...</p>
       ) : (
-        <ChartBox  options={pieOptions} series={pieSeries} type="pie" width="500" />
+        <div className="flex flex-col 2xl:flex-row gap-3">
+          <ChartBox options={pieOptions} series={pieSeries} type="pie" width="500" />
+          <ChartBox options={availabilityLineOptions} series={availabilityLineSeries} type="line" width="500" />
+        </div>
       )}
     </div>
   )
