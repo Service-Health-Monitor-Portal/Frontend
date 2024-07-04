@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 
 const Dashboard = () => {
   const id = useParams<{ id: string }>().id ?? ''
+  const [refetchInterval, setRefetchInterval] = useState<number>(60000)
   const [availabilityLineSeries, setAvailabilityLineSeries] = useState<any[]>([])
   const [availabilityLineOptions, setAvailabilityLineOptions] = useState<any>({
     chart: {
@@ -43,6 +44,7 @@ const Dashboard = () => {
   const { data, isLoading } = useCustomQuery({
     queryKey: ['services', id],
     url: `services/${id}`,
+    pollInterval: refetchInterval,
   })
   useEffect(() => {
     if (data) {
@@ -94,16 +96,25 @@ const Dashboard = () => {
 
   console.log(pieSeries)
   return (
-    <div className="flex flex-col w-full h-full items-center justify-center">
+    <div className="flex flex-col w-full h-full items-center justify-center relative">
       {!id ? (
         <h1 className="text-2xl text-white text-center">Please choose service to open it</h1>
       ) : isLoading ? (
         <p>Loading...</p>
       ) : (
-        <div className="flex flex-col 2xl:flex-row gap-3">
-          <ChartBox options={pieOptions} series={pieSeries} type="pie" width="500" />
-          <ChartBox options={availabilityLineOptions} series={availabilityLineSeries} type="line" width="500" />
-        </div>
+        <>
+          <select className="absolute top-4 right-4 h-10 bg-gray-800 text-white" onChange={(e) => setRefetchInterval(Number(e.target.value))}>
+            <option value="60000">1 minute</option>
+            <option value="300000">5 minutes</option>
+            <option value="600000">10 minutes</option>
+            <option value="900000">15 minutes</option>
+            <option value="1800000">30 minutes</option>
+          </select>
+          <div className="flex flex-col 2xl:flex-row gap-3">
+            <ChartBox options={pieOptions} series={pieSeries} type="pie" width="500" />
+            <ChartBox options={availabilityLineOptions} series={availabilityLineSeries} type="line" width="500" />
+          </div>
+        </>
       )}
     </div>
   )
