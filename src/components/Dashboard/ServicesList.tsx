@@ -14,6 +14,7 @@ const ServicesList = () => {
     queryKey: ['services'],
     url: 'services',
   })
+  console.log(data)
 
   useEffect(() => {
     if (data) {
