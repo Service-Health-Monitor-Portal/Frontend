@@ -41,11 +41,18 @@ const Dashboard = () => {
       mode: 'dark',
     },
   })
+
+  const [startDate, setStartDate] = useState<Date | null>(null)
+  const [endDate, setEndDate] = useState<Date | null>(null)
+  console.log('startDate', startDate)
+  console.log('endDate', endDate)
+
   const { data, isLoading } = useCustomQuery({
-    queryKey: ['services', id],
-    url: `services/${id}`,
+    queryKey: ['services', id, startDate?.toISOString() || '', endDate?.toISOString() || ''].filter(Boolean),
+    url: `services/${id}${startDate ? `?startDate=${startDate.toISOString()}` : ''}${endDate ? `&endDate=${endDate.toISOString()}` : ''}`,
     pollInterval: refetchInterval,
-  })
+})
+
   useEffect(() => {
     if (data) {
       const newPieSeries = []
@@ -92,18 +99,39 @@ const Dashboard = () => {
       })
     }
   }, [data])
-  console.log(data)
 
-  console.log(pieSeries)
   return (
     <div className="flex flex-col w-full h-full items-center justify-center relative">
+      <div className="flex gap-3 mb-4">
+        <div className="flex flex-col">
+          <label className="text-white">Start Date</label>
+          <input
+            type="date"
+            value={startDate ? startDate.toISOString().split('T')[0] : ''}
+            onChange={(e) => setStartDate(new Date(e.target.value))}
+            className="p-2 bg-gray-800 text-white"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-white">End Date</label>
+          <input
+            type="date"
+            value={endDate ? endDate.toISOString().split('T')[0] : ''}
+            onChange={(e) => setEndDate(new Date(e.target.value))}
+            className="p-2 bg-gray-800 text-white"
+          />
+        </div>
+      </div>
       {!id ? (
         <h1 className="text-2xl text-white text-center">Please choose service to open it</h1>
       ) : isLoading ? (
         <p>Loading...</p>
       ) : (
         <>
-          <select className="absolute top-4 right-4 h-10 bg-gray-800 text-white" onChange={(e) => setRefetchInterval(Number(e.target.value))}>
+          <select
+            className="absolute top-4 right-4 h-10 bg-gray-800 text-white"
+            onChange={(e) => setRefetchInterval(Number(e.target.value))}
+          >
             <option value="60000">1 minute</option>
             <option value="300000">5 minutes</option>
             <option value="600000">10 minutes</option>
