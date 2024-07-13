@@ -1,15 +1,12 @@
 import { Outlet } from 'react-router-dom'
-import Navbar from '../components/Navbar'
+// import Navbar from '../components/Navbar'
 import Sidebar from '../components/Dashboard/Sidebar'
 import { useState } from 'react'
 
 export const MainLayout = () => {
   return (
     <div className="flex flex-col bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] h-full">
-      <Navbar />
-      <div className="flex-1">
         <Outlet />
-      </div>
     </div>
   )
 }

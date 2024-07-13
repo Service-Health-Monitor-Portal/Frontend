@@ -13,8 +13,9 @@ const ServicesList = () => {
   const { data, isLoading } = useCustomQuery({
     queryKey: ['services'],
     url: 'services',
+    pollInterval: 6000,
   })
-  console.log(data)
+  console.log("from ServicesList.tsx", data)
 
   useEffect(() => {
     if (data) {

@@ -4,8 +4,10 @@ import Button from '../UI/Button'
 import Plus from '../UI/Plus'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 const AddServiceForm = () => {
+  const navigate = useNavigate()
   const [data, setData] = useState({
     name: '',
     success: 0,
@@ -27,10 +29,11 @@ const AddServiceForm = () => {
     e.preventDefault()
     console.log(data)
     axios
-      .post('http://localhost:8080/api/v1/services', data)
+      .post('http://localhost:7000/api/v1/services', data)
       .then((res) => {
         console.log('Response:', res)
         toast.success('Service added successfully')
+        navigate('/dashboard/1')
       })
       .catch((err) => {
         console.info('Error:', err.response.data)
@@ -51,7 +54,7 @@ const AddServiceForm = () => {
         text="Success Rate"
       />
       <InputField
-        name="dependencyErrorRate"
+        name="dependencyError"
         type="number"
         value={data.dependencyError}
         min={0}
@@ -61,27 +64,27 @@ const AddServiceForm = () => {
       />
 
       <InputField
-        name="invalidInputErrorRate"
+        name="invalidInputError"
         type="number"
-        value={data.throttlingError}
+        value={data.invalidInputError}
         min={0}
         max={100}
         onChange={handleChange}
         text="Invalid Input Error Rate"
       />
       <InputField
-        name="throttlingErrorRate"
+        name="throttlingError"
         type="number"
-        value={data.faultError}
+        value={data.throttlingError}
         min={0}
         max={100}
         onChange={handleChange}
         text="Throttling Error Rate"
       />
       <InputField
-        name="faultErrorRate"
+        name="faultError"
         type="number"
-        value={data.invalidInputError}
+        value={data.faultError}
         min={0}
         max={100}
         onChange={handleChange}

@@ -7,9 +7,10 @@ interface IProps {
     url: string;
     config?: AxiosRequestConfig;
     pollInterval?: number;
+    enabled?: boolean;
 }
 
-const useCustomQuery = ({queryKey, url, config, pollInterval}: IProps) => {
+const useCustomQuery = ({queryKey, url, config, pollInterval, enabled = true}: IProps) => {
     return useQuery({
         queryKey,
         queryFn: async () => {
@@ -17,6 +18,7 @@ const useCustomQuery = ({queryKey, url, config, pollInterval}: IProps) => {
           return data;
         },
         refetchInterval: pollInterval,
+        enabled
       })
 }
 
