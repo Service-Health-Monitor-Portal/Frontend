@@ -30,10 +30,10 @@ const AddServiceForm = () => {
     console.log(data)
     axios
       .post('http://localhost:7000/api/v1/services', data)
-      .then((res) => {
+      .then((res: any) => {
         console.log('Response:', res)
         toast.success('Service added successfully')
-        navigate('/dashboard/1')
+        navigate('/dashboard/' + res.data.id)
       })
       .catch((err) => {
         console.info('Error:', err.response.data)
