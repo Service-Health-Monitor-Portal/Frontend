@@ -29,7 +29,7 @@ const AddServiceForm = () => {
     e.preventDefault()
     console.log(data)
     axios
-      .post('http://localhost:7000/api/v1/services', data)
+      .post(`${process.env.SIMULATOR_API_URL}/api/v1/services`, data)
       .then((res: any) => {
         console.log('Response:', res)
         toast.success('Service added successfully')

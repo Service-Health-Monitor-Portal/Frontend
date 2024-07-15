@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080/influxdb/',
-});
+  baseURL: `${process.env.LOG_ANALYZER_API_URL}/influxdb/`,
+})
 
-export default axiosInstance;
+export default axiosInstance
