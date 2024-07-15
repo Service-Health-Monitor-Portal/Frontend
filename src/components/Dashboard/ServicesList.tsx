@@ -20,7 +20,7 @@ const ServicesList = () => {
       },
     },
   })
-  console.log("from ServicesList.tsx", data)
+  console.log('from ServicesList.tsx', data)
 
   useEffect(() => {
     if (data) {
@@ -29,7 +29,7 @@ const ServicesList = () => {
   }, [data])
 
   return (
-    <div className="flex flex-col text-center gap-3 text-[#E1E1E1] font-semibold w-full">
+    <div className="flex flex-col text-center gap-3 text-[#E1E1E1] font-semibold w-full overflow-auto">
       {isLoading ? (
         <p>Loading...</p>
       ) : (

@@ -13,14 +13,14 @@ const Sidebar = ({ open, setOpen }: SidebarProps) => {
   return (
     <div
       className={`${
-        open ? 'flex' : 'hidden'
+        open ? 'flex pt-16' : 'hidden'
       } fixed md:static md:flex flex-col items-center justify-between py-5 w-full md:w-64 h-full bg-gradient-to-b from-[#2C427F] to-[#101C49] flex-shrink-0 z-50`}
       >
       <ServicesList />
-      <button className="absolute top-4 right-4 md:hidden p-2" onClick={() => setOpen(false)}>
+      <button className="absolute p-2 top-4 right-4 md:hidden" onClick={() => setOpen(false)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-white"
+          className="w-6 h-6 text-white"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

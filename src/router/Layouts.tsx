@@ -13,13 +13,16 @@ export const MainLayout = () => {
 
 export const DashboardLayout = () => {
   const [open, setOpen] = useState(false)
-
+  const handleOpenBar = () => {
+    console.log('open')
+    setOpen(!open)
+  }
   return (
     <div className="relative flex bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] h-full">
-      <button className="absolute top-4 left-4 md:hidden p-2" onClick={() => setOpen(!open)}>
+      <button className="absolute z-50 p-2 top-4 left-4 md:hidden" onClick={handleOpenBar}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-6 w-6 text-white"
+          className="w-6 h-6 text-white"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
