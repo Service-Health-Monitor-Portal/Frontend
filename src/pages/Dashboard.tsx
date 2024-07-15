@@ -66,6 +66,11 @@ const Dashboard = () => {
     }`,
     pollInterval: refetchInterval,
     enabled: !!id,
+    config: {
+      headers: {
+        'ngrok-skip-browser-warning': '1',
+      },
+    },
   })
 
   console.log('data from dashboard', data)
@@ -148,7 +153,7 @@ const Dashboard = () => {
 
 
   return (
-    <div className="flex flex-col w-full h-full items-center justify-center relative">
+    <div className="relative flex flex-col items-center justify-center w-full h-full">
       {/*     <div className="flex gap-3 mb-4">
         <div className="flex flex-col">
           <label className="text-white">Start Date</label>
@@ -156,7 +161,7 @@ const Dashboard = () => {
             type="date"
             value={startDate ? startDate.toISOString().split('T')[0] : ''}
             onChange={(e) => setStartDate(new Date(e.target.value))}
-            className="p-2 bg-gray-800 text-white"
+            className="p-2 text-white bg-gray-800"
           />
         </div>
         <div className="flex flex-col">
@@ -165,18 +170,18 @@ const Dashboard = () => {
             type="date"
             value={endDate ? endDate.toISOString().split('T')[0] : ''}
             onChange={(e) => setEndDate(new Date(e.target.value))}
-            className="p-2 bg-gray-800 text-white"
+            className="p-2 text-white bg-gray-800"
           />
         </div>
       </div> */}
       {!id ? (
-        <h1 className="text-2xl text-white text-center">Please choose service to open it</h1>
+        <h1 className="text-2xl text-center text-white">Please choose service to open it</h1>
       ) : isLoading ? (
         <p>Loading...</p>
       ) : (
         <>
           <select
-            className="absolute top-4 right-4 h-10 bg-gray-800 text-white"
+            className="absolute h-10 text-white bg-gray-800 top-4 right-4"
             onChange={(e) => setRefetchInterval(Number(e.target.value))}
           >
             <option value="5000"> 5 seconds</option>
@@ -185,7 +190,7 @@ const Dashboard = () => {
             <option value="60000">1 minute</option>
             <option value="300000">5 minutes</option>
           </select>
-          <div className="flex flex-col 2xl:flex-row gap-3">
+          <div className="flex flex-col gap-3 2xl:flex-row">
             <ChartBox options={pieOptions} series={pieSeries} type="pie" width="500" />
             <ChartBox options={availabilityLineOptions} series={availabilityLineSeries} type="line" width="500" />
           </div>

@@ -14,6 +14,11 @@ const ServicesList = () => {
     queryKey: ['services'],
     url: 'services',
     pollInterval: 6000,
+    config: {
+      headers: {
+        'ngrok-skip-browser-warning': '1',
+      },
+    },
   })
   console.log("from ServicesList.tsx", data)
 
