@@ -18,7 +18,7 @@ export const DashboardLayout = () => {
     setOpen(!open)
   }
   return (
-    <div className="relative flex bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] h-full">
+    <div className="relative flex h-full bg-gradient-to-br">
       <button className="absolute z-50 p-2 top-4 left-4 md:hidden" onClick={handleOpenBar}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

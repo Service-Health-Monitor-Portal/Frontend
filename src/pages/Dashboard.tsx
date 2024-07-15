@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import ChartBox from '../components/Dashboard/ChartBox'
 import useCustomQuery from '../hooks/useCustomQuery'
 import { useEffect, useState } from 'react'
+import { useWindowWidth } from '@react-hook/window-size'
 
 const Dashboard = () => {
   const { id } = useParams<{ id: string }>()
@@ -48,7 +49,7 @@ const Dashboard = () => {
     labels: logTypes,
     legend: {
       show: true,
-      position: 'right',
+      position: 'bottom',
     },
     colors: ['#00AB55', '#2D99FF', '#FFE700', '#826AF9', '#FF3D71'],
     theme: {
@@ -151,9 +152,13 @@ const Dashboard = () => {
     }
   }, [data, id, refetchInterval])
 
+  const windowWidth = useWindowWidth()
+  const chartWidth = windowWidth < 768 ? '300' : '500'
+  const chartHeightForPie = windowWidth < 768 ? '250' : '300'
+  const chartHeight = windowWidth < 768 ? '300' : '350'
 
   return (
-    <div className="relative flex flex-col items-center justify-center w-full h-full">
+    <div className="relative flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] overflow-auto">
       {/*     <div className="flex gap-3 mb-4">
         <div className="flex flex-col">
           <label className="text-white">Start Date</label>
@@ -188,9 +193,9 @@ const Dashboard = () => {
             <option value="60000">1 minute</option>
             <option value="300000">5 minutes</option>
           </select>
-          <div className="flex flex-col gap-3 2xl:flex-row">
-            <ChartBox options={pieOptions} series={pieSeries} type="pie" width="500" />
-            <ChartBox options={availabilityLineOptions} series={availabilityLineSeries} type="line" width="500" />
+          <div className="flex flex-col gap-3 mt-20 2xl:flex-row md:mt-0">
+            <ChartBox options={pieOptions} series={pieSeries} type="pie" width={chartWidth} height={chartHeightForPie} />
+            <ChartBox options={availabilityLineOptions} series={availabilityLineSeries} type="line" width={chartWidth} height={chartHeight} />
           </div>
         </>
       )}

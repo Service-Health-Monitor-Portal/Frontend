@@ -5,9 +5,14 @@ import useCustomQuery from '../../hooks/useCustomQuery'
 interface IServiceMetadata {
   name: string
   id: number
+  description: string
 }
 
-const ServicesList = () => {
+interface ServicesListProps {
+  setOpen: (open: boolean) => void
+}
+
+const ServicesList = ({setOpen}: ServicesListProps) => {
   const [services, setServices] = useState([])
 
   const { data, isLoading } = useCustomQuery({
@@ -41,6 +46,7 @@ const ServicesList = () => {
               className={({ isActive }) =>
                 `${isActive ? 'bg-gradient-to-r from-[#101C49] to-[#000000]' : 'bg-transparent'} w-full py-3`
               }
+              onClick={() => setOpen(false)}              
             >
               {service.name}
             </NavLink>

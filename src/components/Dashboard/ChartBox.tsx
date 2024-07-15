@@ -19,6 +19,7 @@ interface IProps {
     | 'rangeArea'
     | 'treemap'
   width: string
+  height: string
   series: {
     name: string
     data: number[]
@@ -26,10 +27,10 @@ interface IProps {
   options: any
 }
 
-const ChartBox = ({  options, series, type, width }: IProps) => {
+const ChartBox = ({ options, series, type, width, height }: IProps) => {
   return (
     <div className="bg-black-opacity-08 border border-[#101C49] rounded-2xl p-4">
-      <Chart options={options} series={series} type={type} width={width} />
+      <Chart options={options} series={series} type={type} width={width} height={height} />
     </div>
   )
 }
