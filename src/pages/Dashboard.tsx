@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 const Dashboard = () => {
   const { id } = useParams<{ id: string }>()
   const logTypes = ['success', 'dependencyError', 'faultError', 'throttlingError', 'invalidInputError']
-  const [refetchInterval, setRefetchInterval] = useState<number>(5000)
+  const [refetchInterval, setRefetchInterval] = useState<number>(30000)
   const [availabilityLineSeries, setAvailabilityLineSeries] = useState<any[]>([])
   const [availabilityLineOptions, setAvailabilityLineOptions] = useState<any>({
     chart: {
@@ -139,7 +139,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (data && id) {
-      const [lineSeries, timeStamps] = calculateAvailabilityLineSeries(data, 60000)
+      const [lineSeries, timeStamps] = calculateAvailabilityLineSeries(data, refetchInterval)
       setPieSeries(calculatePieSeries(data))
       setAvailabilityLineSeries([{ name: 'Availability', data: lineSeries }])
       setAvailabilityLineOptions((prevOptions: any) => ({
@@ -149,7 +149,7 @@ const Dashboard = () => {
         },
       }))
     }
-  }, [data, id])
+  }, [data, id, refetchInterval])
 
 
   return (
@@ -184,8 +184,6 @@ const Dashboard = () => {
             className="absolute h-10 text-white bg-gray-800 top-4 right-4"
             onChange={(e) => setRefetchInterval(Number(e.target.value))}
           >
-            <option value="5000"> 5 seconds</option>
-            <option value="10000">10 seconds</option>
             <option value="30000">30 seconds</option>
             <option value="60000">1 minute</option>
             <option value="300000">5 minutes</option>
