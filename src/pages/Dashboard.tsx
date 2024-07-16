@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react'
 import { useWindowWidth } from '@react-hook/window-size'
 import ChartBox from '../components/Dashboard/ChartBox'
 import useCustomQuery from '../hooks/useCustomQuery'
+import { calculateAvailabilityLineSeries, calculateLineSeries, calculatePieSeries, logTypes } from '../functions'
 
 const Dashboard = () => {
   const { id } = useParams<{ id: string }>()
-  const logTypes = ['success', 'dependencyError', 'faultError', 'throttlingError', 'invalidInputError']
   const [refetchInterval, setRefetchInterval] = useState<number>(30000)
   const [availabilityLineSeries, setAvailabilityLineSeries] = useState<any[]>([])
   const [availabilityLineOptions, setAvailabilityLineOptions] = useState<any>({
@@ -28,6 +28,7 @@ const Dashboard = () => {
     chart: { height: 350, type: 'line' },
     dataLabels: { enabled: false },
     stroke: { curve: 'straight' },
+    title: { text: 'All Logs', align: 'left' },
     xaxis: { categories: [] },
     yaxis: { title: { text: '' }, labels: { formatter: (val: number) => val.toFixed(0) } },
     theme: { mode: 'dark' },
@@ -55,92 +56,6 @@ const Dashboard = () => {
     enabled: !!id,
     config: { headers: { 'ngrok-skip-browser-warning': '1' } },
   })
-
-  const calculatePieSeries = (data: any) => {
-    const newPieSeries = [0, 0, 0, 0, 0]
-    data.forEach((item: any) => {
-      newPieSeries[logTypes.indexOf(item.status)]++
-    })
-    return newPieSeries
-  }
-
-  const calculateAvailabilityLineSeries = (data: any, duration: number) => {
-    const newAvailabilityLineSeries: any[] = []
-    const timeStamps: any[] = []
-    const types = ['success', 'throttlingError', 'invalidInputError']
-    let currentTime = new Date(data[0].time)
-
-    timeStamps.push(currentTime.toISOString())
-
-    const listOfListsOfLogs = data.reduce((acc: any[], item: any) => {
-      if (types.includes(item.status)) {
-        const index = Math.floor((new Date(item.time).getTime() - currentTime.getTime()) / duration)
-        acc[index] = acc[index] || []
-        acc[index].push(item)
-      }
-      return acc
-    }, [])
-
-    for (const id of Object.keys(listOfListsOfLogs)) {
-      const list = listOfListsOfLogs[id] || []
-      let success = 0,
-        throttlingError = 0,
-        invalidInputError = 0
-      if (Array.isArray(list)) {
-        list.forEach((item: any) => {
-          success += item.status === 'success' ? 1 : 0
-          throttlingError += item.status === 'throttlingError' ? 1 : 0
-          invalidInputError += item.status === 'invalidInputError' ? 1 : 0
-        })
-      }
-      const availability = (success / (success + throttlingError + invalidInputError)) * 100
-      newAvailabilityLineSeries.push(availability)
-      currentTime = new Date(currentTime.getTime() + duration)
-      timeStamps.push(currentTime.toISOString())
-    }
-    return [newAvailabilityLineSeries, timeStamps]
-  }
-
-  const calculateLineSeries = (data: any, duration: number) => {
-    const newLineSeries: any[] = []
-    const timeStamps: any[] = []
-    const types = ['success', 'dependencyError', 'faultError', 'throttlingError', 'invalidInputError']
-    let currentTime = new Date(data[0].time)
-
-    timeStamps.push(currentTime.toISOString())
-
-    const listOfListsOfLogs = data.reduce((acc: any[], item: any) => {
-      if (types.includes(item.status)) {
-        const index = Math.floor((new Date(item.time).getTime() - currentTime.getTime()) / duration)
-        acc[index] = acc[index] || []
-        acc[index].push(item)
-      }
-      return acc
-    }, [])
-
-    Object.keys(listOfListsOfLogs).forEach((id) => {
-      const list = listOfListsOfLogs[id] || []
-      let success = 0,
-        dependencyError = 0,
-        faultError = 0,
-        throttlingError = 0,
-        invalidInputError = 0
-      if (Array.isArray(list)) {
-        list.forEach((item: any) => {
-          success += item.status === 'success' ? 1 : 0
-          dependencyError += item.status === 'dependencyError' ? 1 : 0
-          faultError += item.status === 'faultError' ? 1 : 0
-          throttlingError += item.status === 'throttlingError' ? 1 : 0
-          invalidInputError += item.status === 'invalidInputError' ? 1 : 0
-        })
-      }
-      newLineSeries.push({ success, dependencyError, faultError, throttlingError, invalidInputError })
-      currentTime = new Date(currentTime.getTime() + duration)
-      timeStamps.push(currentTime.toISOString())
-    })
-
-    return [newLineSeries, timeStamps]
-  }
 
   useEffect(() => {
     if (id) {
@@ -185,14 +100,26 @@ const Dashboard = () => {
 
       const [successLineSeries, successTimeStamps] = calculateLineSeries(data, refetchInterval)
 
+      const logTypesNames: any = {
+        success: 'Success',
+        dependencyError: 'DependencyError',
+        faultError: 'FaultError',
+        throttlingError: 'Throttle',
+        invalidInputError: 'InvalidInputError',
+      }
+
       const newMultipleLinesSeries = logTypes.map((type) => ({
-        name: type,
+        name: logTypesNames[type],
         data: successLineSeries.map((item: any) => item[type]),
       }))
 
       setMultipleLinesSeries(newMultipleLinesSeries)
 
-      setMultipleLinesOptions((prevOptions: any) => ({ ...prevOptions, xaxis: { categories: successTimeStamps } }))
+      setMultipleLinesOptions((prevOptions: any) => ({
+        ...prevOptions,
+        xaxis: { categories: successTimeStamps },
+        colors: ['#00AB55', '#2D99FF', '#FFE700', '#826AF9', '#FF3D71'],
+      }))
     }
   }, [data, id, refetchInterval])
 
