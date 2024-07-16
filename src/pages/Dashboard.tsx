@@ -255,7 +255,7 @@ const Dashboard = () => {
             <option value="300000">5 minutes</option>
           </select>
           <div className="flex flex-col gap-5 mt-20 md:mt-0 h-full p-8">
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 2xl:grid-cols-2">
               <ChartBox
                 options={pieOptions}
                 series={pieSeries}
@@ -271,7 +271,7 @@ const Dashboard = () => {
                 height={chartHeight}
               />
             </div>
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-5 2xl:grid-cols-2">
               <ChartBox
                 options={successLineOptions}
                 series={successLineSeries}
