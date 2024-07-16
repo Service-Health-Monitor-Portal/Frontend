@@ -629,6 +629,59 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-hook/debounce@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@react-hook/debounce@npm:3.0.0"
+  dependencies:
+    "@react-hook/latest": "npm:^1.0.2"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 10c0/12db70a62b82061f3aaa9cbcc3d4c2ec6c40b150f4edf658f22931349743a91d8297a75b65edb1b946f8feb7e3110aae8fde22694770d10f30bf2302e007f5a0
+  languageName: node
+  linkType: hard
+
+"@react-hook/event@npm:^1.2.1":
+  version: 1.2.6
+  resolution: "@react-hook/event@npm:1.2.6"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 10c0/72a185b6ffd4e7e6729a2807c83c4d8cca3f83cf9c03065b9be2ae47f6623998799c0effe939fd70602efe148537353f03d7250cc876372d2b092d52fd4c3513
+  languageName: node
+  linkType: hard
+
+"@react-hook/latest@npm:^1.0.2":
+  version: 1.0.3
+  resolution: "@react-hook/latest@npm:1.0.3"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 10c0/d6a166c21121da519a516e8089ba28a2779d37b6017732ab55476c0d354754ad215394135765254f8752a7c6661c3fb868d088769a644848602f00f8821248ed
+  languageName: node
+  linkType: hard
+
+"@react-hook/throttle@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@react-hook/throttle@npm:2.2.0"
+  dependencies:
+    "@react-hook/latest": "npm:^1.0.2"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 10c0/a8c99314fcd4401cb482330c5d1e16fa871371d327a8529efdbcfc1c2b97cc11bf43b668dadaf4e993286fb6b8904275f8ee6f80721631ece4f2bdc7a9612e18
+  languageName: node
+  linkType: hard
+
+"@react-hook/window-size@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "@react-hook/window-size@npm:3.1.1"
+  dependencies:
+    "@react-hook/debounce": "npm:^3.0.0"
+    "@react-hook/event": "npm:^1.2.1"
+    "@react-hook/throttle": "npm:^2.2.0"
+  peerDependencies:
+    react: ">=16.8"
+  checksum: 10c0/01b6ebc9d184c203bf9bc18db47172b30d2df697e1acd38865511afc7124cc6b5bd4311906667ae713b0e0e836f79e9498ae123f9d37a85a1a1301629941dae4
+  languageName: node
+  linkType: hard
+
 "@remix-run/router@npm:1.16.1":
   version: 1.16.1
   resolution: "@remix-run/router@npm:1.16.1"
@@ -755,6 +808,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.49.1":
+  version: 5.49.1
+  resolution: "@tanstack/query-core@npm:5.49.1"
+  checksum: 10c0/96cd7a22f16f9014083d60b136d430714b84cb06cbd8de863a787ca4e3bd58d3ddfa06fa6390e78fabf62878fdf593e342b9c0210ab443c329e5460134dfa90b
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:^5.49.2":
+  version: 5.49.2
+  resolution: "@tanstack/react-query@npm:5.49.2"
+  dependencies:
+    "@tanstack/query-core": "npm:5.49.1"
+  peerDependencies:
+    react: ^18.0.0
+  checksum: 10c0/c69702487e5e1c0a9758b96c21a7ce3bace1336a61c01f260d7927724a441f01c7d8074d89d317c8001480ac65e7b5762327ff3b3c9fe6d568186488f0dad430
+  languageName: node
+  linkType: hard
+
 "@types/babel__core@npm:^7.20.5":
   version: 7.20.5
   resolution: "@types/babel__core@npm:7.20.5"
@@ -800,6 +871,15 @@ __metadata:
   version: 1.0.5
   resolution: "@types/estree@npm:1.0.5"
   checksum: 10c0/b3b0e334288ddb407c7b3357ca67dbee75ee22db242ca7c56fe27db4e1a31989cb8af48a84dd401deb787fe10cc6b2ab1ee82dc4783be87ededbe3d53c79c70d
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.14.10":
+  version: 20.14.10
+  resolution: "@types/node@npm:20.14.10"
+  dependencies:
+    undici-types: "npm:~5.26.4"
+  checksum: 10c0/0b06cff14365c2d0085dc16cc8cbea5c40ec09cfc1fea966be9eeecf35562760bfde8f88e86de6edfaf394501236e229d9c1084fad04fb4dec472ae245d8ae69
   languageName: node
   linkType: hard
 
@@ -1586,6 +1666,13 @@ __metadata:
   dependencies:
     esutils: "npm:^2.0.2"
   checksum: 10c0/c96bdccabe9d62ab6fea9399fdff04a66e6563c1d6fb3a3a063e8d53c3bb136ba63e84250bbf63d00086a769ad53aef92d2bd483f03f837fc97b71cbee6b2520
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.4.5":
+  version: 16.4.5
+  resolution: "dotenv@npm:16.4.5"
+  checksum: 10c0/48d92870076832af0418b13acd6e5a5a3e83bb00df690d9812e94b24aff62b88ade955ac99a05501305b8dc8f1b0ee7638b18493deb6fe93d680e5220936292f
   languageName: node
   linkType: hard
 
@@ -3559,6 +3646,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "service-health-monitor-portal@workspace:."
   dependencies:
+    "@react-hook/window-size": "npm:^3.1.1"
+    "@tanstack/react-query": "npm:^5.49.2"
+    "@types/node": "npm:^20.14.10"
     "@types/react": "npm:^18.2.66"
     "@types/react-dom": "npm:^18.2.22"
     "@typescript-eslint/eslint-plugin": "npm:^7.2.0"
@@ -3567,6 +3657,7 @@ __metadata:
     apexcharts: "npm:^3.49.1"
     autoprefixer: "npm:^10.4.19"
     axios: "npm:^1.7.2"
+    dotenv: "npm:^16.4.5"
     eslint: "npm:^8.57.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.6"
@@ -4034,6 +4125,13 @@ __metadata:
   version: 1.5.3
   resolution: "ufo@npm:1.5.3"
   checksum: 10c0/1df10702582aa74f4deac4486ecdfd660e74be057355f1afb6adfa14243476cf3d3acff734ccc3d0b74e9bfdefe91d578f3edbbb0a5b2430fe93cd672370e024
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 10c0/bb673d7876c2d411b6eb6c560e0c571eef4a01c1c19925175d16e3a30c4c428181fb8d7ae802a261f283e4166a0ac435e2f505743aa9e45d893f9a3df017b501
   languageName: node
   linkType: hard
 
