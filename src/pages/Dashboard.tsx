@@ -33,39 +33,11 @@ const Dashboard = () => {
     theme: { mode: 'dark' },
   }
 
-  const [successLineSeries, setSuccessLineSeries] = useState<any[]>([])
-  const [dependencyErrorLineSeries, setDependencyErrorLineSeries] = useState<any[]>([])
-  const [faultErrorLineSeries, setFaultErrorLineSeries] = useState<any[]>([])
-  const [throttlingErrorLineSeries, setThrottlingErrorLineSeries] = useState<any[]>([])
-  const [invalidInputErrorLineSeries, setInvalidInputErrorLineSeries] = useState<any[]>([])
-
-  // line chart for multiple lines, will be used to show all types of logs instead of showing them separately
   const [multipleLinesSeries, setMultipleLinesSeries] = useState<any[]>([])
 
   const [multipleLinesOptions, setMultipleLinesOptions] = useState<any>({
     ...initialState,
     title: { text: 'All Logs', align: 'left' },
-  })
-
-  const [successLineOptions, setSuccessLineOptions] = useState<any>({
-    ...initialState,
-    title: { text: 'Success', align: 'left' },
-  })
-  const [dependencyErrorLineOptions, setDependencyErrorLineOptions] = useState<any>({
-    ...initialState,
-    title: { text: 'DependencyError', align: 'left' },
-  })
-  const [faultErrorLineOptions, setFaultErrorLineOptions] = useState<any>({
-    ...initialState,
-    title: { text: 'FaultError', align: 'left' },
-  })
-  const [throttlingErrorLineOptions, setThrottlingErrorLineOptions] = useState<any>({
-    ...initialState,
-    title: { text: 'Throttle', align: 'left' },
-  })
-  const [invalidInputErrorLineOptions, setInvalidInputErrorLineOptions] = useState<any>({
-    ...initialState,
-    title: { text: 'InvalidInputError', align: 'left' },
   })
 
   const [pieSeries, setPieSeries] = useState<any[]>([])
@@ -189,62 +161,8 @@ const Dashboard = () => {
       })
 
       setPieSeries([])
-      setSuccessLineSeries([])
-      setDependencyErrorLineSeries([])
-      setFaultErrorLineSeries([])
-      setThrottlingErrorLineSeries([])
-      setInvalidInputErrorLineSeries([])
+
       setMultipleLinesSeries([])
-
-      setSuccessLineOptions({
-        chart: { height: 350, type: 'line' },
-        dataLabels: { enabled: false },
-        stroke: { curve: 'straight' },
-        title: { text: 'Success', align: 'left' },
-        xaxis: { categories: [] },
-        yaxis: { title: { text: '' }, labels: { formatter: (val: number) => val.toFixed(0) } },
-        theme: { mode: 'dark' },
-      })
-
-      setDependencyErrorLineOptions({
-        chart: { height: 350, type: 'line' },
-        dataLabels: { enabled: false },
-        stroke: { curve: 'straight' },
-        title: { text: 'DependencyError', align: 'left' },
-        xaxis: { categories: [] },
-        yaxis: { title: { text: '' }, labels: { formatter: (val: number) => val.toFixed(0) } },
-        theme: { mode: 'dark' },
-      })
-
-      setFaultErrorLineOptions({
-        chart: { height: 350, type: 'line' },
-        dataLabels: { enabled: false },
-        stroke: { curve: 'straight' },
-        title: { text: 'FaultError', align: 'left' },
-        xaxis: { categories: [] },
-        yaxis: { title: { text: '' }, labels: { formatter: (val: number) => val.toFixed(0) } },
-        theme: { mode: 'dark' },
-      })
-
-      setThrottlingErrorLineOptions({
-        chart: { height: 350, type: 'line' },
-        dataLabels: { enabled: false },
-        stroke: { curve: 'straight' },
-        title: { text: 'Throttle', align: 'left' },
-        xaxis: { categories: [] },
-        yaxis: { title: { text: '' }, labels: { formatter: (val: number) => val.toFixed(0) } },
-        theme: { mode: 'dark' },
-      })
-
-      setInvalidInputErrorLineOptions({
-        chart: { height: 350, type: 'line' },
-        dataLabels: { enabled: false },
-        stroke: { curve: 'straight' },
-        title: { text: 'InvalidInputError', align: 'left' },
-        xaxis: { categories: [] },
-        yaxis: { title: { text: '' }, labels: { formatter: (val: number) => val.toFixed(0) } },
-        theme: { mode: 'dark' },
-      })
 
       setMultipleLinesOptions({
         chart: { height: 350, type: 'line' },
@@ -255,9 +173,8 @@ const Dashboard = () => {
         yaxis: { title: { text: '' }, labels: { formatter: (val: number) => val.toFixed(0) } },
         theme: { mode: 'dark' },
       })
-      
     }
-  }, [ id])
+  }, [id])
 
   useEffect(() => {
     if (data && id) {
@@ -267,35 +184,6 @@ const Dashboard = () => {
       setAvailabilityLineOptions((prevOptions: any) => ({ ...prevOptions, xaxis: { categories: timeStamps } }))
 
       const [successLineSeries, successTimeStamps] = calculateLineSeries(data, refetchInterval)
-      setSuccessLineSeries([{ name: 'success', data: successLineSeries.map((item: any) => item.success) }])
-      setSuccessLineOptions((prevOptions: any) => ({ ...prevOptions, xaxis: { categories: successTimeStamps } }))
-
-      setDependencyErrorLineSeries([
-        { name: 'dependencyError', data: successLineSeries.map((item: any) => item.dependencyError) },
-      ])
-      setDependencyErrorLineOptions((prevOptions: any) => ({
-        ...prevOptions,
-        xaxis: { categories: successTimeStamps },
-      }))
-
-      setFaultErrorLineSeries([{ name: 'faultError', data: successLineSeries.map((item: any) => item.faultError) }])
-      setFaultErrorLineOptions((prevOptions: any) => ({ ...prevOptions, xaxis: { categories: successTimeStamps } }))
-
-      setThrottlingErrorLineSeries([
-        { name: 'throttlingError', data: successLineSeries.map((item: any) => item.throttlingError) },
-      ])
-      setThrottlingErrorLineOptions((prevOptions: any) => ({
-        ...prevOptions,
-        xaxis: { categories: successTimeStamps },
-      }))
-
-      setInvalidInputErrorLineSeries([
-        { name: 'invalidInputError', data: successLineSeries.map((item: any) => item.invalidInputError) },
-      ])
-      setInvalidInputErrorLineOptions((prevOptions: any) => ({
-        ...prevOptions,
-        xaxis: { categories: successTimeStamps },
-      }))
 
       const newMultipleLinesSeries = logTypes.map((type) => ({
         name: type,
@@ -346,43 +234,7 @@ const Dashboard = () => {
                 height={chartHeight}
               />
             </div>
-            <div className="grid grid-cols-1 gap-5 2xl:grid-cols-2">
-              {/* <ChartBox
-                options={successLineOptions}
-                series={successLineSeries}
-                type="line"
-                width={chartWidth}
-                height={chartHeight}
-              />
-              <ChartBox
-                options={dependencyErrorLineOptions}
-                series={dependencyErrorLineSeries}
-                type="line"
-                width={chartWidth}
-                height={chartHeight}
-              />
-              <ChartBox
-                options={faultErrorLineOptions}
-                series={faultErrorLineSeries}
-                type="line"
-                width={chartWidth}
-                height={chartHeight}
-              />
-              <ChartBox
-                options={throttlingErrorLineOptions}
-                series={throttlingErrorLineSeries}
-                type="line"
-                width={chartWidth}
-                height={chartHeight}
-              />
-              <ChartBox
-                options={invalidInputErrorLineOptions}
-                series={invalidInputErrorLineSeries}
-                type="line"
-                width={chartWidth}
-                height={chartHeight}
-              /> */}
-
+            <div className="w-full flex items-center justify-center">
               <ChartBox
                 options={multipleLinesOptions}
                 series={multipleLinesSeries}
@@ -390,7 +242,6 @@ const Dashboard = () => {
                 width={chartWidth}
                 height={chartHeight}
               />
-
             </div>
           </div>
         </>
