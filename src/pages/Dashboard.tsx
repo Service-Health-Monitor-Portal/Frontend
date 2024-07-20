@@ -1,9 +1,12 @@
+// src/pages/Dashboard.tsx
+
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useWindowWidth } from '@react-hook/window-size'
 import ChartBox from '../components/Dashboard/ChartBox'
 import useCustomQuery from '../hooks/useCustomQuery'
 import { calculateAvailabilityLineSeries, calculateLineSeries, calculatePieSeries, logTypes } from '../functions'
+import Loader from '../components/Loader'
 
 const Dashboard = () => {
   const { id } = useParams<{ id: string }>()
@@ -35,7 +38,6 @@ const Dashboard = () => {
   }
 
   const [multipleLinesSeries, setMultipleLinesSeries] = useState<any[]>([])
-
   const [multipleLinesOptions, setMultipleLinesOptions] = useState<any>({
     ...initialState,
     title: { text: 'All Logs', align: 'left' },
@@ -76,9 +78,7 @@ const Dashboard = () => {
       })
 
       setPieSeries([])
-
       setMultipleLinesSeries([])
-
       setMultipleLinesOptions({
         chart: { height: 350, type: 'line' },
         dataLabels: { enabled: false },
@@ -128,51 +128,55 @@ const Dashboard = () => {
   const chartHeightForPie = windowWidth < 768 ? '250' : '300'
   const chartHeight = windowWidth < 768 ? '300' : '350'
 
+  if (isLoading)
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] overflow-auto">
+        <Loader />
+      </div>
+    )
+
+  if (!data)
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] overflow-auto">
+        <div className="text-white text-xl font-semibold">Please choose service to open it</div>
+      </div>
+    )
+
   return (
-    <div className="relative flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] overflow-auto">
-      {!id ? (
-        <h1 className="text-2xl text-center text-white">Please choose service to open it</h1>
-      ) : isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <select
-            className="absolute h-10 text-white bg-gray-800 top-4 right-4"
-            onChange={(e) => setRefetchInterval(Number(e.target.value))}
-          >
-            <option value="30000">30 seconds</option>
-            <option value="60000">1 minute</option>
-            <option value="300000">5 minutes</option>
-          </select>
-          <div className="flex flex-col gap-5 mt-20 md:mt-0 h-full p-8">
-            <div className="grid grid-cols-1 gap-5 2xl:grid-cols-2">
-              <ChartBox
-                options={pieOptions}
-                series={pieSeries}
-                type="pie"
-                width={chartWidth}
-                height={chartHeightForPie}
-              />
-              <ChartBox
-                options={availabilityLineOptions}
-                series={availabilityLineSeries}
-                type="line"
-                width={chartWidth}
-                height={chartHeight}
-              />
-            </div>
-            <div className="w-full flex items-center justify-center">
-              <ChartBox
-                options={multipleLinesOptions}
-                series={multipleLinesSeries}
-                type="line"
-                width={chartWidth}
-                height={chartHeight}
-              />
-            </div>
-          </div>
-        </>
-      )}
+    <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] overflow-auto">
+      <div className="w-full flex justify-between items-center h-10 mt-12 px-5">
+        <h1 className="text-xl text-white font-semibold">Service: </h1>
+        <select
+          role="combobox"
+          className="h-10 text-white bg-gray-800"
+          onChange={(e) => setRefetchInterval(Number(e.target.value))}
+        >
+          <option value="30000">30 seconds</option>
+          <option value="60000">1 minute</option>
+          <option value="300000">5 minutes</option>
+        </select>
+      </div>
+      <div className="flex flex-col gap-5 mt-20 md:mt-0 h-full p-8">
+        <div className="grid grid-cols-1 gap-5 2xl:grid-cols-2">
+          <ChartBox options={pieOptions} series={pieSeries} type="pie" width={chartWidth} height={chartHeightForPie} />
+          <ChartBox
+            options={availabilityLineOptions}
+            series={availabilityLineSeries}
+            type="line"
+            width={chartWidth}
+            height={chartHeight}
+          />
+        </div>
+        <div className="w-full flex items-center justify-center">
+          <ChartBox
+            options={multipleLinesOptions}
+            series={multipleLinesSeries}
+            type="line"
+            width={chartWidth}
+            height={chartHeight}
+          />
+        </div>
+      </div>
     </div>
   )
 }
