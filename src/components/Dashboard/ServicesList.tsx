@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import useCustomQuery from '../../hooks/useCustomQuery'
+import Loader from '../Loader'
 
 interface IServiceMetadata {
   name: string
@@ -25,13 +26,24 @@ const ServicesList = ({setOpen}: ServicesListProps) => {
       },
     },
   })
-  console.log('from ServicesList.tsx', data)
 
   useEffect(() => {
     if (data) {
       setServices(data)
     }
   }, [data])
+
+  if (isLoading) {
+    return <div className="flex flex-col text-center justify-center gap-3 text-[#E1E1E1] font-semibold w-full h-full">
+      <Loader />
+    </div>
+  }
+
+  if (!services.length) {
+    return <div className="flex flex-col text-center justify-center gap-3 text-[#E1E1E1] font-semibold w-full h-full">
+      <p>No services available</p>
+    </div>
+  }
 
   return (
     <div className="flex flex-col text-center gap-3 text-[#E1E1E1] font-semibold w-full overflow-auto">

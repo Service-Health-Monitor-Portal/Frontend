@@ -1,17 +1,26 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import { Router } from 'react-router-dom'
-import { createMemoryHistory } from 'history'
 import Home from '../../src/pages/Home'
+import { BrowserRouter, useNavigate } from 'react-router-dom'
+import { Mock } from 'vitest'
+
+// Partially mock react-router-dom
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom')
+  return {
+    ...actual,
+    useNavigate: vi.fn(),
+  }
+})
 
 describe('Home Component', () => {
-  let history: ReturnType<typeof createMemoryHistory>
-
+  const mockNavigate = vi.fn()
   beforeEach(() => {
-    history = createMemoryHistory()
+    vi.resetAllMocks()
+    ;(useNavigate as unknown as Mock).mockReturnValue(mockNavigate)
     render(
-      <Router location={history.location} navigator={history}>
+      <BrowserRouter>
         <Home />
-      </Router>
+      </BrowserRouter>
     )
   })
 
@@ -33,7 +42,7 @@ describe('Home Component', () => {
   it('should navigate to dashboard on button click', () => {
     const button = screen.getByText('Join us now')
     fireEvent.click(button)
-    expect(history.location.pathname).toBe('/dashboard')
+    expect(mockNavigate).toHaveBeenCalledWith('/dashboard')
   })
 
   it('should render the image', () => {

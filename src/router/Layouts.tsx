@@ -6,7 +6,7 @@ import { useState } from 'react'
 export const MainLayout = () => {
   return (
     <div className="flex flex-col bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] h-full">
-        <Outlet />
+      <Outlet />
     </div>
   )
 }
