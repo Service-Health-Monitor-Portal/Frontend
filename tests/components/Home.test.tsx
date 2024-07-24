@@ -15,8 +15,8 @@ vi.mock('react-router-dom', async () => {
 describe('Home Component', () => {
   const mockNavigate = vi.fn()
   beforeEach(() => {
-    vi.resetAllMocks()
-    ;(useNavigate as unknown as Mock).mockReturnValue(mockNavigate)
+    vi.resetAllMocks();
+    (useNavigate as unknown as Mock).mockReturnValue(mockNavigate)
     render(
       <BrowserRouter>
         <Home />

@@ -14,8 +14,8 @@ describe('ServicesList', () => {
   const mockSetOpen = vi.fn()
 
   beforeEach(() => {
-    vi.resetAllMocks()
-    ;(useCustomQuery as unknown as Mock).mockReturnValue({
+    vi.resetAllMocks();
+    (useCustomQuery as unknown as Mock).mockReturnValue({
       data: [
         { id: 1, name: 'Service 1', description: 'Description 1' },
         { id: 2, name: 'Service 2', description: 'Description 2' },
@@ -33,7 +33,7 @@ describe('ServicesList', () => {
   }
 
   it('should display loading message when data is loading', () => {
-    ;(useCustomQuery as unknown as Mock).mockReturnValue({
+    (useCustomQuery as unknown as Mock).mockReturnValue({
       data: undefined,
       isLoading: true,
     })
