@@ -1,5 +1,3 @@
-// src/pages/Dashboard.tsx
-
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useWindowWidth } from '@react-hook/window-size'
@@ -128,17 +126,17 @@ const Dashboard = () => {
   const chartHeightForPie = windowWidth < 768 ? '250' : '300'
   const chartHeight = windowWidth < 768 ? '300' : '350'
 
+  if (!id)
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] overflow-auto">
+        <div className="text-white text-xl font-semibold">Please choose service to open it</div>
+      </div>
+    )
+
   if (isLoading)
     return (
       <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] overflow-auto">
         <Loader />
-      </div>
-    )
-
-  if (!data)
-    return (
-      <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] overflow-auto">
-        <div className="text-white text-xl font-semibold">Please choose service to open it</div>
       </div>
     )
 
