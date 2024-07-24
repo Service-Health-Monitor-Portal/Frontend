@@ -9,7 +9,6 @@ const Home = () => {
         <h1 className="text-2xl md:text-4xl text-white">Welcome to service tracker</h1>
         <h1 className="text-lg md:text-2xl text-white">
           Monitor your service meticulously to ensure
-          <br />
           flawless performance
         </h1>
         <button
