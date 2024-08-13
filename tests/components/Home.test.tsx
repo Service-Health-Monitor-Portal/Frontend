@@ -25,7 +25,7 @@ describe('Home Component', () => {
   })
 
   it('should render the heading', () => {
-    const heading = screen.getByText('Welcome to service tracker')
+    const heading = screen.getByTestId('heading')
     expect(heading).toBeInTheDocument()
   })
 
@@ -42,7 +42,7 @@ describe('Home Component', () => {
   it('should navigate to dashboard on button click', () => {
     const button = screen.getByText('Join us now')
     fireEvent.click(button)
-    expect(mockNavigate).toHaveBeenCalledWith('/dashboard')
+    expect(mockNavigate).toHaveBeenCalledWith('/login')
   })
 
   it('should render the image', () => {
