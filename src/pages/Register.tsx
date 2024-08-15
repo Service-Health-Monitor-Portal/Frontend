@@ -1,25 +1,31 @@
 import logo from '../assets/logo.svg'
 import registerImage from '../assets/Register.svg'
-import { Formik } from "formik"
+import { Formik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
-import Input from '../components/UI/Input'
+import InputPasswordField from '../components/UI/InputPasswordField'
 import { useState } from 'react'
+import InputField from '../components/UI/InputField'
 
 const Register = () => {
   const navigate = useNavigate()
   const schema = () =>
-      Yup.object().shape({
-        email: Yup.string().email('Invalid email').required('Email is required'),
-        password: Yup.string().min(8, 'Password must be at least 8 characters').required('Password is required').max(30, 'Password must be at most 30 characters'),
-        username: Yup.string().min(3, 'Username must be at least 3 characters').required('Username is required').max(30, 'Username must be at most 30 characters'),
-        confirmPassword: Yup.string()
-          .oneOf([Yup.ref('password')], 'Passwords must match')
-          .required('Confirm Password is required'),
-      })
+    Yup.object().shape({
+      email: Yup.string().email('Invalid email').required('Email is required'),
+      password: Yup.string()
+        .min(8, 'Password must be at least 8 characters')
+        .required('Password is required')
+        .max(30, 'Password must be at most 30 characters'),
+      username: Yup.string()
+        .min(3, 'Username must be at least 3 characters')
+        .required('Username is required')
+        .max(30, 'Username must be at most 30 characters'),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password')], 'Passwords must match')
+        .required('Confirm Password is required'),
+    })
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [showConfirmPassword, setConfirmPassword] = useState<boolean>(false)
-
 
   return (
     <>
@@ -32,87 +38,80 @@ const Register = () => {
           navigate('/')
         }}
       />
-      <div className="flex flex-col lg:flex-row justify-between h-full lg:pt-14 pt-1 px-10 lg:mx-12 mx-5">
+      <div className="flex flex-col lg:flex-row justify-between items-center h-full lg:pt-14 pt-8 px-10 lg:mx-12 mx-5">
         <Formik
           initialValues={{ email: '', password: '', username: '', confirmPassword: '' }}
-          onSubmit={() => {
-            navigate('/login')
+          onSubmit={(value) => {
+            console.log(value)
           }}
           validationSchema={schema()}
         >
-          {({ errors, handleSubmit, touched }) => (
+          {({ errors, handleSubmit, touched, values, handleChange, handleBlur }) => (
             <form onSubmit={handleSubmit} className="flex flex-col gap-3 lg:gap-6 text-black">
-              <div>
-                <h1 className="lg:text-xl text-base md:text-xl text-white">
-                  {' '}
-                  <span className="text-green-200">U</span>sername
-                </h1>
-
-                <Input
-                  type="text"
-                  name="username"
-                  placeholder="Enter your username"
-                  error={errors.username && touched.username ? true : false}
-                />
-                {errors.username && touched.username && <p className="text-red-500 -mb-4">{errors.username}</p>}
-              </div>
-              <div>
-                <h1 className="lg:text-xl text-base md:text-xl text-white">
-                  {' '}
-                  <span className="text-green-200 md:text-xl">E</span>mail
-                </h1>
-                <Input
-                  type="text"
-                  name="email"
-                  placeholder="Enter your email"
-                  error={errors.email && touched.email ? true : false}
-                />
-                {errors.email && touched.email && <p className="text-red-500 -mb-4">{errors.email}</p>}
-              </div>
-              <div>
-                <h1 className="lg:text-xl text-base md:text-xl text-white">
-                  {' '}
-                  <span className="text-green-200 md:text-xl">P</span>assword
-                </h1>
-                <Input
-                  type="password"
-                  name="password"
-                  placeholder="Enter your password"
-                  showPassword={showPassword}
-                  setShowPassword={setShowPassword}
-                  error={errors.password && touched.password ? true : false}
-                  dataTestid="showPassword"
-                />
-                {errors.password && touched.password && <p className="text-red-500 -mb-4">{errors.password}</p>}
-              </div>
-              <div>
-                <h1 className="lg:text-xl text-base md:text-xl text-white">
-                  {' '}
-                  <span className="text-green-200">C</span>onfirm Password
-                </h1>
-                <Input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm your password"
-                  showPassword={showConfirmPassword}
-                  setShowPassword={setConfirmPassword}
-                  error={errors.confirmPassword && touched.confirmPassword ? true : false}
-                  dataTestid="showConfirmPassword"
-                />
-                {errors.confirmPassword && touched.confirmPassword && (
-                  <p className="text-red-500 -mb-4">{errors.confirmPassword}</p>
-                )}
-              </div>
+              <InputField
+                type="text"
+                text="Username"
+                name="username"
+                value={values.username}
+                handelBlur={handleBlur}
+                onChange={handleChange}
+                placeholder="Enter your username"
+                error={errors.username && touched.username ? true : false}
+              />
+              {errors.username && touched.username && (
+                <p className="text-red-500 lg:-mt-5 -mt-2 -mb-4">{errors.username}</p>
+              )}
+              <InputField
+                type="text"
+                text="Email"
+                name="email"
+                value={values.email}
+                onChange={handleChange}
+                handelBlur={handleBlur}
+                placeholder="Enter your email"
+                error={errors.email && touched.email ? true : false}
+              />
+              {errors.email && touched.email && <p className="text-red-500 lg:-mt-5 -mt-2 -mb-4">{errors.email}</p>}
+              <InputPasswordField
+                name="password"
+                text="Password"
+                value={values.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                handleBlur={handleBlur}
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
+                error={errors.password && touched.password ? true : false}
+                dataTestid="showPassword"
+              />
+              {errors.password && touched.password && (
+                <p className="text-red-500 lg:-mt-5 -mt-2 -mb-4">{errors.password}</p>
+              )}
+              <InputPasswordField
+                name="confirmPassword"
+                value={values.confirmPassword}
+                onChange={handleChange}
+                text="Confirm Password"
+                placeholder="Confirm your password"
+                handleBlur={handleBlur}
+                showPassword={showConfirmPassword}
+                setShowPassword={setConfirmPassword}
+                error={errors.confirmPassword && touched.confirmPassword ? true : false}
+                dataTestid="showConfirmPassword"
+              />
+              {errors.confirmPassword && touched.confirmPassword && (
+                <p className="text-red-500 lg:-mt-5 -mt-2 -mb-4">{errors.confirmPassword}</p>
+              )}
               <button
                 type="submit"
-                className="hover:border rounded-2xl text-white lg:h-12 md:text-xl lg:w-96 h-7 bg-gradient-to-bl from-[#101C49] to-[#000000] lg:text-xl text-base lg:mt-6 mt-4 w-[280px] md:w-[340px]"
+                className="hover:border rounded-2xl text-white lg:h-12 md:text-xl h-9  bg-gradient-to-bl from-[#101C49] to-[#000000] lg:text-xl text-base lg:mt-6 mt-4 w-full"
               >
                 Register
               </button>
             </form>
           )}
         </Formik>
-        <img src={registerImage} alt="register" className="lg:w-3/6 lg:-mt-40 lg:px-12 w-10/12" />
+        <img src={registerImage} alt="register" className="lg:w-3/6 lg:-mt-40 hidden lg:pt-32 md:inline lg:px-12 w-9/12 mb-10" />
       </div>
     </>
   )

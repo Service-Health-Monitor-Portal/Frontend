@@ -7,8 +7,11 @@ interface IProps extends HTMLAttributes<HTMLButtonElement> {
 
 const Button = ({name, children, ...props}: IProps) => {
   return (
-    <button className="flex gap-2 items-center text-[#E1E1E1] bg-gradient-to-r from-[#101C49] to-[#000000] py-3 px-4 rounded-3xl" {...props}>
-        {children} {name}
+    <button
+      className="flex gap-2 w-full items-center h-9 lg:h-12 text-[#E1E1E1] bg-gradient-to-r from-[#101C49] to-[#000000] py-3 px-4 rounded-2xl"
+      {...props}
+    >
+      {children} {name}
     </button>
   )
 }
