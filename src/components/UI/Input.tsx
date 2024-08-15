@@ -9,9 +9,10 @@ interface IProps extends HTMLAttributes<HTMLInputElement> {
   showPassword?: boolean
   error: boolean | undefined
   setShowPassword?: ((value: boolean) => void) | undefined
+  dataTestid?: string | undefined
 }
 
-const Input = ({ children, type, showPassword, setShowPassword, error, ...props }: IProps) => {
+const Input = ({ children, type, showPassword, setShowPassword, error, dataTestid, ...props }: IProps) => {
   if (type === 'password') {
     return (
       <div
@@ -21,7 +22,7 @@ const Input = ({ children, type, showPassword, setShowPassword, error, ...props 
       >
         {children}
         <Field type={showPassword ? 'text' : 'password'} className="w-full text-lg focus:outline-none" {...props} />
-        <ShowPasswordButton showPassword={showPassword} setShowPassword={setShowPassword} />
+        <ShowPasswordButton showPassword={showPassword} setShowPassword={setShowPassword} showTestId={dataTestid} />
       </div>
     )
   } else {

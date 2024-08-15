@@ -33,7 +33,7 @@ const Home = () => {
             <button
               className="border-2 rounded-full lg:h-14 lg:w-64 md:h-12 md:w-52 h-10 w-48 text-green-200 border-green-200 lg:text-xl text-lg flex items-center justify-center group mb-10"
               onClick={() => {
-                navigate('/login')
+                navigate('/dashboard')
               }}
             >
               Join us now

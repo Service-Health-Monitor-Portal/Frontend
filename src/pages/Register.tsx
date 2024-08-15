@@ -27,6 +27,7 @@ const Register = () => {
         src={logo}
         alt="logo"
         className="mx-12 mt-10 lg:w-1/12 w-1/4"
+        data-testid="logo"
         onClick={() => {
           navigate('/')
         }}
@@ -76,10 +77,11 @@ const Register = () => {
                 <Input
                   type="password"
                   name="password"
-                  placeholder="Enter your Password"
+                  placeholder="Enter your password"
                   showPassword={showPassword}
                   setShowPassword={setShowPassword}
                   error={errors.password && touched.password ? true : false}
+                  dataTestid="showPassword"
                 />
                 {errors.password && touched.password && <p className="text-red-500 -mb-4">{errors.password}</p>}
               </div>
@@ -91,10 +93,11 @@ const Register = () => {
                 <Input
                   type="password"
                   name="confirmPassword"
-                  placeholder="Confirm Password"
+                  placeholder="Confirm your password"
                   showPassword={showConfirmPassword}
                   setShowPassword={setConfirmPassword}
                   error={errors.confirmPassword && touched.confirmPassword ? true : false}
+                  dataTestid="showConfirmPassword"
                 />
                 {errors.confirmPassword && touched.confirmPassword && (
                   <p className="text-red-500 -mb-4">{errors.confirmPassword}</p>

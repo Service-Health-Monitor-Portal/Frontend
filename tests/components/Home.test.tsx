@@ -42,7 +42,7 @@ describe('Home Component', () => {
   it('should navigate to dashboard on button click', () => {
     const button = screen.getByText('Join us now')
     fireEvent.click(button)
-    expect(mockNavigate).toHaveBeenCalledWith('/login')
+    expect(mockNavigate).toHaveBeenCalledWith('/dashboard')
   })
 
   it('should render the image', () => {
