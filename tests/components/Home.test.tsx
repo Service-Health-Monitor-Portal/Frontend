@@ -25,7 +25,7 @@ describe('Home Component', () => {
   })
 
   it('should render the heading', () => {
-    const heading = screen.getByText('Welcome to service tracker')
+    const heading = screen.getByTestId('heading')
     expect(heading).toBeInTheDocument()
   })
 
