@@ -3,16 +3,20 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Register from "../../src/pages/Register";
 import { HashRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "../../src/redux/store";
 
 describe('Register Page', () => {
-  beforeEach(() => {
-    render(
-      <HashRouter>
-        <Register />
-      </HashRouter>
-    )
-  })
-     
+     beforeEach(() => {
+          render(
+               <Provider store={store}>
+                    <HashRouter>
+                         <Register />
+                    </HashRouter>
+               </Provider>
+          )
+     })
+
      it('should have a logo', () => {
           const logo = screen.getByTestId('logo');
           expect(logo).toBeInTheDocument();
@@ -71,14 +75,14 @@ describe('Register Page', () => {
           const errorMessage = await screen.findByText('Password is required');
           expect(errorMessage).toBeInTheDocument();
      });
-     
+
      it('should show error message when confirm password is not provided', async () => {
           const register = screen.getByText('Register');
           userEvent.click(register);
           const errorMessage = await screen.findByText('Confirm Password is required');
           expect(errorMessage).toBeInTheDocument();
      });
-     
+
      it('should show error message when Username less than 3 char', async () => {
           const username = screen.getByPlaceholderText('Enter your username');
           await userEvent.type(username, 'te');
