@@ -145,7 +145,7 @@ const Register = () => {
                 disabled={isSubmitting || loading}
               >
                 {isSubmitting || loading ? (
-                  <span className="loader"></span>
+                  <span className="animate-spin h-5 w-5 mr-3 border-t-2 border-b-2 border-white rounded-full"></span>
                 ) : (
                   'Register'
                 )}

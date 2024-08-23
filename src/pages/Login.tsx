@@ -1,15 +1,15 @@
 import { Formik } from 'formik';
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import logo from '../assets/logo.svg';
 import loginImage from '../assets/Login.svg';
+import logo from '../assets/logo.svg';
 import InputField from '../components/UI/InputField';
 import InputPasswordField from '../components/UI/InputPasswordField';
 import { loginUser } from '../redux/features/authActions';
 import { AppDispatch, RootState } from '../redux/store';
-import toast from 'react-hot-toast';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -110,7 +110,7 @@ const Login = () => {
                 disabled={isSubmitting || loading}
               >
                 {isSubmitting || loading ? (
-                  <span className="loader"></span>
+                  <span className="animate-spin h-5 w-5 mr-3 border-t-2 border-b-2 border-white rounded-full"></span>
                 ) : (
                   'Login'
                 )}
