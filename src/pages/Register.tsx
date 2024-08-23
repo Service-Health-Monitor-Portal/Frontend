@@ -65,17 +65,17 @@ const Register = () => {
   }, [success, navigate]);
 
   return (
-    <>
+    <div className='relative flex flex-col h-screen items-center'>
       <img
         src={logo}
         alt="logo"
-        className="mx-12 mt-10 lg:w-1/12 w-1/4"
+        className="absolute top-0 left-0 mx-12 mt-10 lg:w-1/12 w-1/4"
         data-testid="logo"
         onClick={() => {
           navigate('/');
         }}
       />
-      <div className="flex flex-col lg:flex-row justify-between items-center h-full lg:pt-14 pt-8 px-10 lg:mx-12 mx-5">
+      <div className="flex flex-col lg:flex-row justify-around items-center h-full w-full lg:pt-14 pt-8 px-10 lg:mx-12 mx-5">
         <Formik
           initialValues={{ email: '', password: '', username: '', confirmPassword: '' }}
           onSubmit={handleSubmit}
@@ -155,11 +155,11 @@ const Register = () => {
         </Formik>
         <img
           src={registerImage}
-          className="lg:w-1/2 w-4/5 mt-8 lg:mt-0 hidden lg:flex"
+          className="lg:w-5/12 w-3/5 mt-8 lg:mt-0 hidden lg:flex"
           alt="Register"
         />
       </div>
-    </>
+    </div>
   );
 };
 
