@@ -5,18 +5,34 @@ import Home from '../pages/Home'
 import Register from '../pages/Register'
 import { DashboardLayout, MainLayout } from './Layouts'
 import Login from '../pages/Login'
+import ProtectedRoute from '../components/ProtecteRoute'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
-        <Route path="/add-service" element={<AddService />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="*" element={<div>404</div>} />
+        <Route path="/add-service" element={
+          <ProtectedRoute isAuthentication={true} redirectPath="/login" >
+            <AddService />
+          </ProtectedRoute>
+        } />
+        <Route path="/login" element={
+          <ProtectedRoute isAuthentication={false} redirectPath="/dashboard" >
+            <Login />
+          </ProtectedRoute>
+        } />
+        <Route path="/register" element={
+          <ProtectedRoute isAuthentication={false} redirectPath="/dashboard" >
+            <Register />
+          </ProtectedRoute>
+        } />
       </Route>
-      <Route path="/dashboard" element={<DashboardLayout />}>
+      <Route path="/dashboard" element={
+        <ProtectedRoute isAuthentication={true} redirectPath="/login" >
+          <DashboardLayout />
+        </ProtectedRoute>
+      }>
         <Route index element={<Dashboard />} />
         <Route path=":id" element={<Dashboard />} />
       </Route>
