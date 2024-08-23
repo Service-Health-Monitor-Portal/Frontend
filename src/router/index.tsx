@@ -4,6 +4,7 @@ import AddService from '../pages/AddService'
 import Home from '../pages/Home'
 import Register from '../pages/Register'
 import { DashboardLayout, MainLayout } from './Layouts'
+import Login from '../pages/Login'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
