@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import InputField from './InputField'
+import InputField from '../UI/InputField'
 import Button from '../UI/Button'
 import Plus from '../UI/Plus'
 import axios from 'axios'
@@ -30,7 +30,7 @@ const AddServiceForm = () => {
     console.log(data)
     axios
       .post(`${process.env.SIMULATOR_API_URL}/api/v1/services`, data)
-      .then((res: any) => {
+      .then((res) => {
         console.log('Response:', res)
         toast.success('Service added successfully')
         navigate('/dashboard/' + res.data.id)
@@ -42,7 +42,7 @@ const AddServiceForm = () => {
   }
 
   return (
-    <form className="w-72 flex flex-col gap-2" onSubmit={handleSubmit}>
+    <form className=" w-auto flex flex-col gap-2" onSubmit={handleSubmit}>
       <InputField name="name" type="text" value={data.name} onChange={handleChange} text="Service Name" />
       <InputField
         name="success"

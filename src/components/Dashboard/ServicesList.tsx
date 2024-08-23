@@ -14,9 +14,9 @@ interface ServicesListProps {
 }
 
 const ServicesList = ({setOpen}: ServicesListProps) => {
-  const [services, setServices] = useState([])
+  const [services, setServices] = useState<IServiceMetadata[]>([])
 
-  const { data, isLoading } = useCustomQuery({
+  const { data, isLoading, error } = useCustomQuery({
     queryKey: ['services'],
     url: 'services',
     pollInterval: 6000,
@@ -28,10 +28,20 @@ const ServicesList = ({setOpen}: ServicesListProps) => {
   })
 
   useEffect(() => {
-    if (data) {
-      setServices(data)
+    if (data && Array.isArray(data)) {
+      setServices(data);
+    } else {
+      setServices([]);
     }
-  }, [data])
+  }, [data]);
+  
+  if (error) {
+    return (
+      <div className="flex flex-col text-center justify-center gap-3 text-[#E1E1E1] font-semibold w-full h-full">
+        <p>Error loading services</p>
+      </div>
+    );
+  }
 
   if (isLoading) {
     return <div className="flex flex-col text-center justify-center gap-3 text-[#E1E1E1] font-semibold w-full h-full">
