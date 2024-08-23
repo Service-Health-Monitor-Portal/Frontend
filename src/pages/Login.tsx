@@ -28,11 +28,17 @@ const Login = () => {
 
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     setSubmitting(true);
+
     try {
-      await dispatch(loginUser(values)).unwrap();
+      await dispatch(
+        loginUser({
+          email: values.email,
+          password: values.password,
+        })
+      ).unwrap();
+
       toast.success('Login successful!');
     } catch (error: any) {
-      toast.error(error.message || 'Login failed');
     } finally {
       setSubmitting(false);
     }

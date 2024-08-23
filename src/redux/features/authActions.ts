@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axiosInstance from '../../services/axios.config'
+import toast from 'react-hot-toast'
 
 export const registerUser = createAsyncThunk(
   'auth/register',
@@ -45,8 +46,9 @@ export const loginUser = createAsyncThunk(
       localStorage.setItem('token', data.token)
       return data
     } catch (error: any) {
-      if (error.response && error.response.data.message) {
-        return rejectWithValue(error.response.data.message)
+      if (error.response && error.response.data.errorMessage) {
+        toast.error(error.response.data.errorMessage)
+        return rejectWithValue(error.response.data.errorMessage)
       } else {
         return rejectWithValue(error.message)
       }
