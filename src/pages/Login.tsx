@@ -38,7 +38,9 @@ const Login = () => {
       ).unwrap();
 
       toast.success('Login successful!');
+      navigate('/dashboard');
     } catch (error: any) {
+      toast.error('Login failed');
     } finally {
       setSubmitting(false);
     }

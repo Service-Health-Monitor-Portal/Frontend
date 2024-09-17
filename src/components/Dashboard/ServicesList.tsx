@@ -15,17 +15,21 @@ interface ServicesListProps {
 
 const ServicesList = ({setOpen}: ServicesListProps) => {
   const [services, setServices] = useState<IServiceMetadata[]>([])
-
+  const token = localStorage.getItem('token') || ''
+  const user = JSON.parse(localStorage.getItem('user') || '{}')
+  console.log(user.id)
+  console.log(token)
   const { data, isLoading, error } = useCustomQuery({
     queryKey: ['services'],
-    url: 'services',
+    url: `services?userId=${user.id}`,
     pollInterval: 6000,
     config: {
       headers: {
         'ngrok-skip-browser-warning': '1',
+        'Authorization': `Bearer ${token}`
       },
     },
-  })
+  });
 
   useEffect(() => {
     if (data && Array.isArray(data)) {
@@ -36,6 +40,7 @@ const ServicesList = ({setOpen}: ServicesListProps) => {
   }, [data]);
   
   if (error) {
+    console.error(error)
     return (
       <div className="flex flex-col text-center justify-center gap-3 text-[#E1E1E1] font-semibold w-full h-full">
         <p>Error loading services</p>

@@ -7,15 +7,14 @@ interface IProps {
     isAuthentication: boolean;
 }
 
-const ProtectedRoute = ({ children, redirectPath, isAuthentication}: IProps) => {
+const ProtectedRoute = ({ children, redirectPath, isAuthentication }: IProps) => {
     const token = localStorage.getItem('token');
-    if(isAuthentication){
-        return token ? <>{children}</> : <Navigate to={redirectPath} />;
-    }
-    else{
-        return !token ? <>{children}</> : <Navigate to={redirectPath} />;
-    }
 
-}
+    if (isAuthentication) {
+        return token ? children : <Navigate to={redirectPath} />;
+    }
+    
+    return !token ? children : <Navigate to={redirectPath} />;
+};
 
 export default ProtectedRoute;

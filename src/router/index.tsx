@@ -13,7 +13,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="/add-service" element={
-          <ProtectedRoute isAuthentication={true} redirectPath="/login" >
+          <ProtectedRoute isAuthentication={true} redirectPath="/register" >
             <AddService />
           </ProtectedRoute>
         } />
@@ -29,7 +29,7 @@ const router = createBrowserRouter(
         } />
       </Route>
       <Route path="/dashboard" element={
-        <ProtectedRoute isAuthentication={true} redirectPath="/login" >
+        <ProtectedRoute isAuthentication={true} redirectPath="/register" >
           <DashboardLayout />
         </ProtectedRoute>
       }>
