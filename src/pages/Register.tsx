@@ -1,26 +1,22 @@
-import { Formik } from 'formik';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
-import logo from '../assets/logo.svg';
-import registerImage from '../assets/Register.svg';
+import toast from 'react-hot-toast';
+import axiosInstance from '../services/axios.config';
 import InputField from '../components/UI/InputField';
 import InputPasswordField from '../components/UI/InputPasswordField';
-import { registerUser } from '../redux/features/authActions';
-import { AppDispatch, RootState } from '../redux/store';
+import * as Yup from 'yup';
+import { Formik } from 'formik';
+import logo from '../assets/logo.svg';
+import registerImage from '../assets/Register.svg';
 
 const Register = () => {
   const navigate = useNavigate();
-  const { loading, success, userInfo } = useSelector(
-    (state: RootState) => state.auth
-  );
-  const dispatch = useDispatch<AppDispatch>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setConfirmPassword] = useState<boolean>(false);
 
   const schema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Email is required'),
-    // password must contain at least 8, must contain numbers
     password: Yup.string()
       .min(8, 'Password must be at least 8 characters')
       .required('Password is required')
@@ -34,48 +30,48 @@ const Register = () => {
       .required('Confirm Password is required'),
   });
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [showConfirmPassword, setConfirmPassword] = useState<boolean>(false);
-
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
+    setLoading(true);
     setSubmitting(true);
 
     try {
-      await dispatch(
-        registerUser({
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const { data } = await axiosInstance.post(
+        'signup',
+        {
           name: values.username,
           email: values.email,
           password: values.password,
-        })
-      ).unwrap();
+        },
+        config
+      );
 
       toast.success('Registration successful!');
+      navigate('/login');
     } catch (error: any) {
-      toast.error(error.message || 'Registration failed');
+      console.log(error);
+      toast.error(error.response?.data.message || 'Registration failed');
     } finally {
       setSubmitting(false);
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    if (success) {
-      console.log(userInfo);
-      navigate('/login');
-    }
-  }, [success, navigate]);
-
   return (
-    <>
+    <div className='relative flex flex-col h-screen items-center'>
       <img
         src={logo}
         alt="logo"
-        className="mx-12 mt-10 lg:w-1/12 w-1/4"
+        className="absolute top-0 left-0 mx-12 mt-10 lg:w-1/12 w-1/4"
         data-testid="logo"
-        onClick={() => {
-          navigate('/');
-        }}
+        onClick={() => navigate('/')}
       />
-      <div className="flex flex-col lg:flex-row justify-between items-center h-full lg:pt-14 pt-8 px-10 lg:mx-12 mx-5">
+      <div className="flex flex-col lg:flex-row justify-around items-center h-full w-full lg:pt-14 pt-8 px-10 lg:mx-12 mx-5">
         <Formik
           initialValues={{ email: '', password: '', username: '', confirmPassword: '' }}
           onSubmit={handleSubmit}
@@ -88,7 +84,6 @@ const Register = () => {
                 text="Username"
                 name="username"
                 value={values.username}
-                handelBlur={handleBlur}
                 onChange={handleChange}
                 placeholder="Enter your username"
                 error={errors.username && touched.username ? true : false}
@@ -102,7 +97,6 @@ const Register = () => {
                 name="email"
                 value={values.email}
                 onChange={handleChange}
-                handelBlur={handleBlur}
                 placeholder="Enter your email"
                 error={errors.email && touched.email ? true : false}
               />
@@ -141,11 +135,11 @@ const Register = () => {
               )}
               <button
                 type="submit"
-                className="hover:border rounded-2xl text-white lg:h-12 md:text-xl h-9  bg-gradient-to-bl from-[#101C49] to-[#000000] lg:text-xl text-base lg:mt-6 mt-4 w-full flex justify-center items-center"
+                className="hover:border rounded-2xl text-white lg:h-12 md:text-xl h-9 bg-gradient-to-bl from-[#101C49] to-[#000000] lg:text-xl text-base lg:mt-6 mt-4 w-full flex justify-center items-center"
                 disabled={isSubmitting || loading}
               >
                 {isSubmitting || loading ? (
-                  <span className="loader"></span>
+                  <span className="animate-spin h-5 w-5 mr-3 border-t-2 border-b-2 border-white rounded-full"></span>
                 ) : (
                   'Register'
                 )}
@@ -155,11 +149,11 @@ const Register = () => {
         </Formik>
         <img
           src={registerImage}
-          className="lg:w-1/2 w-4/5 mt-8 lg:mt-0 hidden lg:flex"
+          className="lg:w-5/12 w-3/5 mt-8 lg:mt-0 hidden lg:flex"
           alt="Register"
         />
       </div>
-    </>
+    </div>
   );
 };
 
