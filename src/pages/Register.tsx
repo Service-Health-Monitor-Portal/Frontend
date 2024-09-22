@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import toast from 'react-hot-toast';
-import axiosInstance from '../services/axios.config';
-import InputField from '../components/UI/InputField';
-import InputPasswordField from '../components/UI/InputPasswordField';
-import * as Yup from 'yup';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Formik } from 'formik';
-import logo from '../assets/logo.svg';
-import registerImage from '../assets/Register.svg';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+import axiosInstance from '../services/axios.config';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -63,96 +63,121 @@ const Register = () => {
   };
 
   return (
-    <div className='relative flex flex-col h-screen items-center'>
-      <img
-        src={logo}
-        alt="logo"
-        className="absolute top-0 left-0 mx-12 mt-10 lg:w-1/12 w-1/4"
-        data-testid="logo"
-        onClick={() => navigate('/')}
-      />
-      <div className="flex flex-col lg:flex-row justify-around items-center h-full w-full lg:pt-14 pt-8 px-10 lg:mx-12 mx-5">
-        <Formik
-          initialValues={{ email: '', password: '', username: '', confirmPassword: '' }}
-          onSubmit={handleSubmit}
-          validationSchema={schema}
-        >
-          {({ errors, handleSubmit, touched, values, handleChange, handleBlur, isSubmitting }) => (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3 lg:gap-6 text-black">
-              <InputField
-                type="text"
-                text="Username"
-                name="username"
-                value={values.username}
-                onChange={handleChange}
-                placeholder="Enter your username"
-                error={errors.username && touched.username ? true : false}
-              />
-              {errors.username && touched.username && (
-                <p className="text-red-500 lg:-mt-5 -mt-2 -mb-4">{errors.username}</p>
-              )}
-              <InputField
-                type="text"
-                text="Email"
-                name="email"
-                value={values.email}
-                onChange={handleChange}
-                placeholder="Enter your email"
-                error={errors.email && touched.email ? true : false}
-              />
-              {errors.email && touched.email && (
-                <p className="text-red-500 lg:-mt-5 -mt-2 -mb-4">{errors.email}</p>
-              )}
-              <InputPasswordField
-                name="password"
-                text="Password"
-                value={values.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-                handleBlur={handleBlur}
-                showPassword={showPassword}
-                setShowPassword={setShowPassword}
-                error={errors.password && touched.password ? true : false}
-                dataTestid="showPassword"
-              />
-              {errors.password && touched.password && (
-                <p className="text-red-500 lg:-mt-5 -mt-2 -mb-4">{errors.password}</p>
-              )}
-              <InputPasswordField
-                name="confirmPassword"
-                value={values.confirmPassword}
-                onChange={handleChange}
-                text="Confirm Password"
-                placeholder="Confirm your password"
-                handleBlur={handleBlur}
-                showPassword={showConfirmPassword}
-                setShowPassword={setConfirmPassword}
-                error={errors.confirmPassword && touched.confirmPassword ? true : false}
-                dataTestid="showConfirmPassword"
-              />
-              {errors.confirmPassword && touched.confirmPassword && (
-                <p className="text-red-500 lg:-mt-5 -mt-2 -mb-4">{errors.confirmPassword}</p>
-              )}
-              <button
-                type="submit"
-                className="hover:border rounded-2xl text-white lg:h-12 md:text-xl h-9 bg-gradient-to-bl from-[#101C49] to-[#000000] lg:text-xl text-base lg:mt-6 mt-4 w-full flex justify-center items-center"
-                disabled={isSubmitting || loading}
-              >
-                {isSubmitting || loading ? (
-                  <span className="animate-spin h-5 w-5 mr-3 border-t-2 border-b-2 border-white rounded-full"></span>
-                ) : (
-                  'Register'
-                )}
-              </button>
-            </form>
-          )}
-        </Formik>
-        <img
-          src={registerImage}
-          className="lg:w-5/12 w-3/5 mt-8 lg:mt-0 hidden lg:flex"
-          alt="Register"
-        />
-      </div>
+    <div className="flex h-screen items-center justify-center">
+      <Card className="w-full max-w-md mx-auto">
+        <CardHeader>
+          <CardTitle className="text-xl">Sign Up</CardTitle>
+          <CardDescription>Enter your details to create an account</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Formik
+            initialValues={{ email: '', password: '', username: '', confirmPassword: '' }}
+            onSubmit={handleSubmit}
+            validationSchema={schema}
+          >
+            {({ errors, handleSubmit, touched, values, handleChange, handleBlur, isSubmitting }) => (
+              <form onSubmit={handleSubmit} className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder="Enter your username"
+                    value={values.username}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                  />
+                  {errors.username && touched.username && (
+                    <p className="text-red-600 text-sm">{errors.username}</p>
+                  )}
+                </div>
+
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={values.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                  />
+                  {errors.email && touched.email && (
+                    <p className="text-red-600 text-sm">{errors.email}</p>
+                  )}
+                </div>
+
+                <div className="grid gap-2">
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="link"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? "Hide" : "Show"} Password
+                  </Button>
+                  {errors.password && touched.password && (
+                    <p className="text-red-600 text-sm">{errors.password}</p>
+                  )}
+                </div>
+
+                <div className="grid gap-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder="Confirm your password"
+                    value={values.confirmPassword}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="link"
+                    onClick={() => setConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? "Hide" : "Show"} Confirm Password
+                  </Button>
+                  {errors.confirmPassword && touched.confirmPassword && (
+                    <p className="text-red-600 text-sm">{errors.confirmPassword}</p>
+                  )}
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isSubmitting || loading}
+                >
+                  {isSubmitting || loading ? "Registering..." : "Register"}
+                </Button>
+              </form>
+            )}
+          </Formik>
+
+          <div className="mt-4 text-center text-sm">
+            Already have an account?{" "}
+            <Button variant="link" onClick={() => navigate('/login')}>
+              Sign in
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

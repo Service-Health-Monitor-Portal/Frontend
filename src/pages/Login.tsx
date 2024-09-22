@@ -135,6 +135,12 @@ export default function LoginForm() {
                         </form>
                     )}
                 </Formik>
+                <div className="mt-1 text-center text-sm">
+                    Don&apos;t have an account?{" "}
+                    <Button variant="link" onClick={() => navigate('/register')}>
+                        Sign up
+                    </Button>
+                </div>
             </Card>
         </div>
     );
