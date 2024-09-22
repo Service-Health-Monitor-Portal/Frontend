@@ -3,9 +3,8 @@ import {
     Card,
     CardContent,
     CardDescription,
-    CardFooter,
     CardHeader,
-    CardTitle,
+    CardTitle
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -70,22 +69,22 @@ export default function LoginForm() {
                         Enter your email below to login to your account.
                     </CardDescription>
                 </CardHeader>
-                <Formik
-                    initialValues={{ email: '', password: '' }}
-                    onSubmit={handleSubmit}
-                    validationSchema={schema}
-                >
-                    {({
-                        errors,
-                        handleSubmit,
-                        touched,
-                        values,
-                        handleChange,
-                        handleBlur,
-                        isSubmitting,
-                    }) => (
-                        <form onSubmit={handleSubmit}>
-                            <CardContent className="grid gap-4">
+                <CardContent>
+                    <Formik
+                        initialValues={{ email: '', password: '' }}
+                        onSubmit={handleSubmit}
+                        validationSchema={schema}
+                    >
+                        {({
+                            errors,
+                            handleSubmit,
+                            touched,
+                            values,
+                            handleChange,
+                            handleBlur,
+                            isSubmitting,
+                        }) => (
+                            <form onSubmit={handleSubmit} className="grid gap-4">
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">Email</Label>
                                     <Input
@@ -125,22 +124,19 @@ export default function LoginForm() {
                                         {showPassword ? "Hide" : "Show"} Password
                                     </Button>
                                 </div>
-                            </CardContent>
-
-                            <CardFooter>
                                 <Button type="submit" className="w-full" disabled={isSubmitting || loading}>
                                     {isSubmitting || loading ? 'Signing in...' : 'Sign in'}
                                 </Button>
-                            </CardFooter>
-                        </form>
-                    )}
-                </Formik>
-                <div className="mt-1 text-center text-sm">
-                    Don&apos;t have an account?{" "}
-                    <Button variant="link" onClick={() => navigate('/register')}>
-                        Sign up
-                    </Button>
-                </div>
+                            </form>
+                        )}
+                    </Formik>
+                    <div className="mt-4 text-center text-sm">
+                        Don&apos;t have an account?{" "}
+                        <Button variant="link" onClick={() => navigate('/register')}>
+                            Sign up
+                        </Button>
+                    </div>
+                </CardContent>
             </Card>
         </div>
     );
