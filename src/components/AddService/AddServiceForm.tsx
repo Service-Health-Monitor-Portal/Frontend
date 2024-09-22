@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import InputField from '../UI/InputField'
-import Button from '../UI/Button'
-import Plus from '../UI/Plus'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
+import { Button } from '../ui/button'
+
 
 const AddServiceForm = () => {
   const navigate = useNavigate()
@@ -62,8 +62,8 @@ const AddServiceForm = () => {
   return (
     <form className=" w-auto flex flex-col gap-10" onSubmit={handleSubmit}>
       <InputField name="name" type="text" value={data.name} onChange={handleChange} text="Service Name" />
-      <Button name="Add Service">
-        <Plus />
+      <Button>
+      Add Service
       </Button>
     </form>
   )

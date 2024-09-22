@@ -1,140 +1,141 @@
-import { Formik } from 'formik';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { loginUser } from "@/redux/features/authActions";
+import { AppDispatch, RootState } from "@/redux/store";
+import { Formik } from "formik";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import * as Yup from 'yup';
-import loginImage from '../assets/Login.svg';
-import logo from '../assets/logo.svg';
-import InputField from '../components/UI/InputField';
-import InputPasswordField from '../components/UI/InputPasswordField';
-import { loginUser } from '../redux/features/authActions';
-import { AppDispatch, RootState } from '../redux/store';
 
-const Login = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
-  const { loading, success } = useSelector((state: RootState) => state.auth);
+export const description = "A simple login form with email and password. The submit button says 'Sign in'.";
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+export default function LoginForm() {
+    const navigate = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
+    const { loading, success } = useSelector((state: RootState) => state.auth);
 
-  const schema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('Email is required'),
-    password: Yup.string()
-      .min(8, 'Password must be at least 8 characters')
-      .required('Password is required')
-      .max(30, 'Password must be at most 30 characters'),
-  });
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  const handleSubmit = async (values: any, { setSubmitting }: any) => {
-    setSubmitting(true);
+    const schema = Yup.object().shape({
+        email: Yup.string().email('Invalid email').required('Email is required'),
+        password: Yup.string()
+            .min(8, 'Password must be at least 8 characters')
+            .max(30, 'Password must be at most 30 characters')
+            .required('Password is required'),
+    });
 
-    try {
-      await dispatch(
-        loginUser({
-          email: values.email,
-          password: values.password,
-        })
-      ).unwrap();
+    const handleSubmit = async (values: any, { setSubmitting }: any) => {
+        setSubmitting(true);
 
-      toast.success('Login successful!');
-      navigate('/dashboard');
-    } catch (error: any) {
-      toast.error('Login failed');
-    } finally {
-      setSubmitting(false);
-    }
-  };
+        try {
+            await dispatch(
+                loginUser({
+                    email: values.email,
+                    password: values.password,
+                })
+            ).unwrap();
 
-  useEffect(() => {
-    if (success) {
-      navigate('/dashboard');
-    }
-  }, [success, navigate]);
+            toast.success('Login successful!');
+            navigate('/dashboard');
+        } catch (error: any) {
+            toast.error('Login failed');
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
-  return (
-    <div className="relative flex flex-col h-screen items-center">
-      <img
-        src={logo}
-        alt="logo"
-        className="absolute top-0 left-0 mx-12 mt-10 lg:w-1/12 w-1/4"
-        data-testid="logo"
-        onClick={() => {
-          navigate('/');
-        }}
-      />
-      <div className="flex flex-col lg:flex-row justify-around items-center h-full w-full lg:pt-14 pt-8 px-10 lg:mx-12 mx-5">
-        <Formik
-          initialValues={{ email: '', password: '' }}
-          onSubmit={handleSubmit}
-          validationSchema={schema}
-        >
-          {({
-            errors,
-            handleSubmit,
-            touched,
-            values,
-            handleChange,
-            handleBlur,
-            isSubmitting,
-          }) => (
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col gap-3 lg:gap-6 text-black"
-            >
-              <InputField
-                type="text"
-                text="Email"
-                name="email"
-                value={values.email}
-                onChange={handleChange}
-                handelBlur={handleBlur}
-                placeholder="Enter your email"
-                error={errors.email && touched.email ? true : false}
-              />
-              {errors.email && touched.email && (
-                <p className="text-red-500 lg:-mt-5 -mt-2 -mb-4">{errors.email}</p>
-              )}
+    useEffect(() => {
+        if (success) {
+            navigate('/dashboard');
+        }
+    }, [success, navigate]);
 
-              <InputPasswordField
-                name="password"
-                text="Password"
-                value={values.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-                handleBlur={handleBlur}
-                showPassword={showPassword}
-                setShowPassword={setShowPassword}
-                error={errors.password && touched.password ? true : false}
-                dataTestid="showPassword"
-              />
-              {errors.password && touched.password && (
-                <p className="text-red-500 lg:-mt-5 -mt-2 -mb-4">{errors.password}</p>
-              )}
+    return (
+        <div className="flex h-full w-full items-center justify-center">
+            <Card className="w-full max-w-sm">
+                <CardHeader>
+                    <CardTitle className="text-2xl">Login</CardTitle>
+                    <CardDescription>
+                        Enter your email below to login to your account.
+                    </CardDescription>
+                </CardHeader>
+                <Formik
+                    initialValues={{ email: '', password: '' }}
+                    onSubmit={handleSubmit}
+                    validationSchema={schema}
+                >
+                    {({
+                        errors,
+                        handleSubmit,
+                        touched,
+                        values,
+                        handleChange,
+                        handleBlur,
+                        isSubmitting,
+                    }) => (
+                        <form onSubmit={handleSubmit}>
+                            <CardContent className="grid gap-4">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="email">Email</Label>
+                                    <Input
+                                        id="email"
+                                        type="email"
+                                        name="email"
+                                        placeholder="m@example.com"
+                                        value={values.email}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        required
+                                    />
+                                    {errors.email && touched.email && (
+                                        <span className="text-red-600">{errors.email}</span>
+                                    )}
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="password">Password</Label>
+                                    <Input
+                                        id="password"
+                                        type={showPassword ? "text" : "password"}
+                                        name="password"
+                                        placeholder="Your password"
+                                        value={values.password}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        required
+                                    />
+                                    {errors.password && touched.password && (
+                                        <span className="text-red-600">{errors.password}</span>
+                                    )}
+                                    <Button
+                                        type="button"
+                                        variant="link"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {showPassword ? "Hide" : "Show"} Password
+                                    </Button>
+                                </div>
+                            </CardContent>
 
-              <button
-                type="submit"
-                className="hover:border rounded-2xl text-white lg:h-12 md:text-xl h-9 bg-gradient-to-bl from-[#101C49] to-[#000000] lg:text-xl text-base lg:mt-6 mt-4 w-full flex justify-center items-center"
-                disabled={isSubmitting || loading}
-              >
-                {isSubmitting || loading ? (
-                  <span className="animate-spin h-5 w-5 mr-3 border-t-2 border-b-2 border-white rounded-full"></span>
-                ) : (
-                  'Login'
-                )}
-              </button>
-            </form>
-          )}
-        </Formik>
-
-        <img
-          src={loginImage}
-          className="lg:w-5/12 w-3/5 mt-8 lg:mt-0 hidden lg:flex"
-          alt="Login"
-        />
-      </div>
-    </div>
-  );
-};
-
-export default Login;
+                            <CardFooter>
+                                <Button type="submit" className="w-full" disabled={isSubmitting || loading}>
+                                    {isSubmitting || loading ? 'Signing in...' : 'Sign in'}
+                                </Button>
+                            </CardFooter>
+                        </form>
+                    )}
+                </Formik>
+            </Card>
+        </div>
+    );
+}

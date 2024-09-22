@@ -1,10 +1,12 @@
 import { Outlet } from 'react-router-dom'
 import Sidebar from '../components/Dashboard/Sidebar'
 import { useState } from 'react'
+import Navbar from '@/components/Navbar'
 
 export const MainLayout = () => {
   return (
-    <div className="flex flex-col bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] h-full">
+    <div className="flex flex-col h-full">
+      <Navbar />
       <Outlet />
     </div>
   )
@@ -17,7 +19,7 @@ export const DashboardLayout = () => {
     setOpen(!open)
   }
   return (
-    <div className="relative flex h-full bg-gradient-to-br">
+    <div className="relative flex h-full">
       <button className="absolute z-50 p-2 top-4 left-4 md:hidden" onClick={handleOpenBar}>
         <svg
           xmlns="http://www.w3.org/2000/svg"

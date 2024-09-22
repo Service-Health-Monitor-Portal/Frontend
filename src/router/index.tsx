@@ -11,6 +11,14 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<MainLayout />}>
+        <Route path="/dashboard" element={
+          <ProtectedRoute isAuthentication={true} redirectPath="/register" >
+            <DashboardLayout />
+          </ProtectedRoute>
+        }>
+          <Route index element={<Dashboard />} />
+          <Route path=":id" element={<Dashboard />} />
+        </Route>
         <Route index element={<Home />} />
         <Route path="/add-service" element={
           <ProtectedRoute isAuthentication={true} redirectPath="/register" >
@@ -27,14 +35,6 @@ const router = createBrowserRouter(
             <Register />
           </ProtectedRoute>
         } />
-      </Route>
-      <Route path="/dashboard" element={
-        <ProtectedRoute isAuthentication={true} redirectPath="/register" >
-          <DashboardLayout />
-        </ProtectedRoute>
-      }>
-        <Route index element={<Dashboard />} />
-        <Route path=":id" element={<Dashboard />} />
       </Route>
       <Route path="*" element={<div>404</div>} />
     </>

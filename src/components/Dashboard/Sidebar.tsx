@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import Button from '../UI/Button'
-import Plus from '../UI/Plus'
 import ServicesList from './ServicesList'
+import { Button } from '../ui/button'
 
 interface SidebarProps {
   open: boolean
@@ -12,10 +11,9 @@ const Sidebar = ({ open, setOpen }: SidebarProps) => {
   const navigate = useNavigate()
   return (
     <div
-      className={`${
-        open ? 'flex pt-16' : 'hidden'
-      } fixed md:static md:flex flex-col px-4 items-center justify-between py-5 w-full md:w-64 h-full bg-gradient-to-b from-[#2C427F] to-[#101C49] flex-shrink-0 z-50`}
-      >
+      className={`${open ? 'flex pt-16' : 'hidden'
+        } fixed md:static md:flex flex-col px-4 items-center justify-between py-5 w-full md:w-64 h-full bg-accent flex-shrink-0 z-50`}
+    >
       <ServicesList setOpen={setOpen} />
       <button className="absolute p-2 top-4 right-4 md:hidden" onClick={() => setOpen(false)}>
         <svg
@@ -28,8 +26,10 @@ const Sidebar = ({ open, setOpen }: SidebarProps) => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
-      <Button name="Add Service" onClick={() => navigate('/add-service')}>
-        <Plus />
+      <Button onClick={() => navigate('/add-service')}>
+        <div className='flex gap-2'>
+          Add Service
+        </div>
       </Button>
     </div>
   )
