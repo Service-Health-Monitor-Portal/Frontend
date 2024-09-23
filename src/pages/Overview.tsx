@@ -21,16 +21,6 @@ export default function Overview() {
         },
     });
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error loading services</div>;
-    }
-
-    console.log(data)
-
     const services: any = data?.slice(0, 10);
 
     const chartData = [
@@ -61,12 +51,16 @@ export default function Overview() {
                         <Activity className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{data.length}</div>
-                        {/* <p className="text-xs text-muted-foreground">
-                            +20.1% from last month
-                        </p> */}
+                        {isLoading ? (
+                            <div>Loading...</div>
+                        ) : error ? (
+                            <div>Error loading services</div>
+                        ) : (
+                            <div className="text-2xl font-bold">{data.length}</div>
+                        )}
                     </CardContent>
                 </Card>
+
                 <Card x-chunk="dashboard-01-chunk-1">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
@@ -79,6 +73,7 @@ export default function Overview() {
                         </p>
                     </CardContent>
                 </Card>
+
                 <Card x-chunk="dashboard-01-chunk-2">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Sales</CardTitle>
@@ -89,6 +84,7 @@ export default function Overview() {
                         <p className="text-xs text-muted-foreground">+19% from last month</p>
                     </CardContent>
                 </Card>
+
                 <Card x-chunk="dashboard-01-chunk-3">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Active Now</CardTitle>
@@ -104,43 +100,44 @@ export default function Overview() {
             </div>
 
             <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-2">
-
-                <Card className="" x-chunk="dashboard-01-chunk-5">
+                <Card x-chunk="dashboard-01-chunk-5">
                     <CardHeader>
                         <CardTitle>Services Availability</CardTitle>
                         <CardDescription>January - June 2024</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <ChartContainer config={chartConfig}>
-                            <BarChart accessibilityLayer data={chartData}>
-                                <CartesianGrid vertical={false} />
-                                <YAxis
-                                    tickCount={6}
-                                    domain={[0, 100]}
-                                />
-                                <XAxis
-                                    dataKey="month"
-                                    tickLine={false}
-                                    tickMargin={10}
-                                    axisLine={false}
-                                    tickFormatter={(value) => value.slice(0, 3)}
-                                />
-                                <ChartTooltip
-                                    cursor={false}
-                                    content={<ChartTooltipContent hideLabel />}
-                                />
-                                <Bar dataKey="availability" fill="var(--color-availability)" radius={8} />
-                            </BarChart>
-                        </ChartContainer>
+                        {isLoading ? (
+                            <div>Loading...</div>
+                        ) : error ? (
+                            <div>Error loading services</div>
+                        ) : (
+                            <ChartContainer config={chartConfig}>
+                                <BarChart accessibilityLayer data={chartData}>
+                                    <CartesianGrid vertical={false} />
+                                    <YAxis tickCount={6} domain={[0, 100]} />
+                                    <XAxis
+                                        dataKey="month"
+                                        tickLine={false}
+                                        tickMargin={10}
+                                        axisLine={false}
+                                        tickFormatter={(value) => value.slice(0, 3)}
+                                    />
+                                    <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+                                    <Bar dataKey="availability" fill="var(--color-availability)" radius={8} />
+                                </BarChart>
+                            </ChartContainer>
+                        )}
                     </CardContent>
-                    <CardFooter className="flex-col items-start gap-2 text-sm">
-                        <div className="flex gap-2 font-medium leading-none">
-                            Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-                        </div>
-                        <div className="leading-none text-muted-foreground">
-                            Showing total visitors for the last 6 months
-                        </div>
-                    </CardFooter>
+                    {!isLoading && !error && (
+                        <CardFooter className="flex-col items-start gap-2 text-sm">
+                            <div className="flex gap-2 font-medium leading-none">
+                                Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+                            </div>
+                            <div className="leading-none text-muted-foreground">
+                                Showing total visitors for the last 6 months
+                            </div>
+                        </CardFooter>
+                    )}
                 </Card>
 
                 <Card x-chunk="dashboard-01-chunk-4">
@@ -159,27 +156,32 @@ export default function Overview() {
                         </Button>
                     </CardHeader>
                     <CardContent>
-                        <Table>
-                            <TableHeader>
-                                <TableRow>
-                                    <TableHead>Service</TableHead>
-                                    <TableHead className="text-right">Availability</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {services?.map((service: any, index: number) => (
-                                    <TableRow key={index}>
-                                        <TableCell>
-                                            <div className="font-medium">{service.name}</div>
-                                        </TableCell>
-                                        <TableCell className="text-right">80</TableCell>
+                        {isLoading ? (
+                            <div>Loading...</div>
+                        ) : error ? (
+                            <div>Error loading services</div>
+                        ) : (
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Service</TableHead>
+                                        <TableHead className="text-right">Availability</TableHead>
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
+                                </TableHeader>
+                                <TableBody>
+                                    {services?.map((service: any, index: number) => (
+                                        <TableRow key={index}>
+                                            <TableCell>
+                                                <div className="font-medium">{service.name}</div>
+                                            </TableCell>
+                                            <TableCell className="text-right">80</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        )}
                     </CardContent>
                 </Card>
-
             </div>
         </main>
     );
