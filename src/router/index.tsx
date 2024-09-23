@@ -7,6 +7,7 @@ import { DashboardLayout, MainLayout } from './Layouts'
 import Login from '../pages/Login'
 import ProtectedRoute from '../components/ProtecteRoute'
 import Overview from '@/pages/Overview'
+import Services from '@/pages/Services'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,11 @@ const router = createBrowserRouter(
         <Route path="/overview" element={
           <ProtectedRoute isAuthentication={true} redirectPath="/dashboard" >
             <Overview />
+          </ProtectedRoute>
+        } />
+        <Route path="/services" element={
+          <ProtectedRoute isAuthentication={true} redirectPath="/dashboard" >
+            <Services />
           </ProtectedRoute>
         } />
         <Route path="/register" element={
