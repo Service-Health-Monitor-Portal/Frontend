@@ -1,9 +1,11 @@
-import logo from '../assets/logo.svg'
-import { useNavigate } from 'react-router-dom'
+import { Menu } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.svg';
 import { ModeToggle } from './mode-toggle';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Button } from './ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -26,17 +28,69 @@ const Navbar = () => {
   }
 
   return (
-    <div className='flex flex-col w-full'>
+    <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <div className='flex px-10 py-1 w-full justify-between items-center'>
-        <img
-          src={logo}
-          alt="logo"
-          className="h-12"
-          data-testid="logo"
-          onClick={() => {
-            navigate('/')
-          }}
-        />
+
+        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+          <img
+            src={logo}
+            alt="logo"
+            className="h-12"
+            data-testid="logo"
+            onClick={() => {
+              navigate('/')
+            }}
+          />
+          <Link
+            to="/overview"
+            className="flex items-center gap-2 text-lg font-semibold md:text-base"
+          >
+            Overview
+          </Link>
+          <Link
+            to="/services"
+            className="text-foreground transition-colors hover:text-foreground"
+          >
+            Services
+          </Link>
+        </nav>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="shrink-0 md:hidden"
+            >
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left">
+            <nav className="grid gap-6 text-lg font-medium">
+              <img
+                src={logo}
+                alt="logo"
+                className="h-12"
+                data-testid="logo"
+                onClick={() => {
+                  navigate('/')
+                }}
+              />
+              <Link
+                to="/overview"
+                className="flex items-center gap-2 text-lg font-semibold md:text-base"
+              >
+                Overview
+              </Link>
+              <Link
+                to="/services"
+                className="text-foreground transition-colors hover:text-foreground"
+              >
+                Services
+              </Link>
+            </nav>
+          </SheetContent>
+        </Sheet>
         <div className='flex gap-2 items-center'>
           <ModeToggle />
           {
@@ -50,9 +104,8 @@ const Navbar = () => {
                 <DropdownMenuContent>
                   <DropdownMenuLabel>{email}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
-                  <DropdownMenuItem>Billing</DropdownMenuItem>
-                  <DropdownMenuItem>Team</DropdownMenuItem>
+                  <DropdownMenuItem>Settings</DropdownMenuItem>
+                  <DropdownMenuItem>Support</DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
@@ -64,11 +117,8 @@ const Navbar = () => {
           }
         </div>
       </div>
-      <div className='-mx-1 my-1 h-px bg-muted w-full'></div>
-    </div>
+    </header>
   )
 }
 
 export default Navbar
-
-/**/

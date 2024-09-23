@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { Mock, vi } from 'vitest';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Dashboard from '../../src/pages/Dashboard';
+import Dashboard from '../../src/pages/Service';
 import useCustomQuery from '../../src/hooks/useCustomQuery';
 import { useWindowWidth } from '@react-hook/window-size';
 import { useParams } from 'react-router-dom';
