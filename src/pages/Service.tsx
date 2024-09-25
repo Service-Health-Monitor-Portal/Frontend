@@ -17,21 +17,21 @@ const Dashboard = () => {
 
   if (!id)
     return (
-      <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] overflow-auto">
-        <div className="text-white text-xl font-semibold">Please choose service to open it</div>
+      <div className="flex flex-col items-center justify-center w-full h-full overflow-auto">
+        <div className="text-xl font-semibold">Please choose service to open it</div>
       </div>
     )
 
   if (isLoading)
     return (
-      <div className="flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] overflow-auto">
+      <div className="flex flex-col items-center justify-center w-full h-full overflow-auto">
         <Loader />
       </div>
     )
 
   return (
-    <div className="flex flex-col w-full h-full bg-gradient-to-br from-[rgb(58,84,145)] to-[#182655] overflow-auto p-5">
-      <h1 className="text-xl text-white font-semibold">Service: {data.name}</h1>
+    <div className="flex flex-col w-full h-full overflow-auto p-5">
+      <h1 className="text-xl font-semibold">Service: {data.name}</h1>
       <ServiceData id={id} />
     </div>
   )

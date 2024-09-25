@@ -42,20 +42,20 @@ const ServicesList = ({setOpen}: ServicesListProps) => {
   if (error) {
     console.error(error)
     return (
-      <div className="flex flex-col text-center justify-center gap-3 text-[#E1E1E1] font-semibold w-full h-full">
+      <div className="flex flex-col text-center justify-center gap-3 font-semibold w-full h-full">
         <p>Error loading services</p>
       </div>
     );
   }
 
   if (isLoading) {
-    return <div className="flex flex-col text-center justify-center gap-3 text-[#E1E1E1] font-semibold w-full h-full">
+    return <div className="flex flex-col text-center justify-center gap-3 font-semibold w-full h-full">
       <Loader />
     </div>
   }
 
   if (!services.length) {
-    return <div className="flex flex-col text-center justify-center gap-3 text-[#E1E1E1] font-semibold w-full h-full">
+    return <div className="flex flex-col text-center justify-center gap-3 font-semibold w-full h-full">
       <p>No services available</p>
     </div>
   }
