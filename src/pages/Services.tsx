@@ -16,6 +16,7 @@ export default function Services() {
     const [serviceName, setServiceName] = useState('');
     const [serviceDescription, setServiceDescription] = useState('');
     const [selectedBadges, setSelectedBadges] = useState<IBadges[]>([]);
+    const [searchInput, setSearchInput] = useState<string>("")
     const token = localStorage.getItem("token");
 
     const { data: servicesData, isLoading, error } = useCustomQuery({
@@ -47,7 +48,7 @@ export default function Services() {
             description: serviceDescription,
             badgeIds: selectedBadges.map((badge) => badge.id)
         };
-    
+
         try {
             await addService(data);
             toast.success('Service added successfully');
@@ -61,6 +62,11 @@ export default function Services() {
         }
     };
 
+    const filteredServices = servicesData?.filter((service: IService) =>
+        service.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+        service?.description?.toLowerCase().includes(searchInput.toLowerCase())
+    );
+
     return (
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 md:px-20 lg:px-36">
             <div className="w-full flex items-center">
@@ -71,6 +77,8 @@ export default function Services() {
                             type="search"
                             placeholder="Search..."
                             className="w-full rounded-lg bg-background pl-8 md:w-[500px]"
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
                         />
                     </div>
 
@@ -139,7 +147,7 @@ export default function Services() {
                 {isLoading && <div>Loading services...</div>}
                 {error && <div>Error loading services</div>}
 
-                {servicesData?.map((service: IService) => (
+                {filteredServices?.map((service: IService) => (
                     <ServiceCard
                         key={service.id}
                         id={service.id}

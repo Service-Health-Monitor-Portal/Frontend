@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import useCustomQuery from "@/hooks/useCustomQuery";
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
+import { IService } from "@/interfaces";
 
 export default function Overview() {
     const token = localStorage.getItem("token")
@@ -21,7 +22,7 @@ export default function Overview() {
         },
     });
 
-    const services: any = data?.slice(0, 10);
+    const services: IService[] = data?.slice(0, 10);
 
     const chartData = [
         { month: "January", availability: 99 },
@@ -173,7 +174,7 @@ export default function Overview() {
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {services?.map((service: any, index: number) => (
+                                    {services?.map((service, index: number) => (
                                         <TableRow key={index}>
                                             <TableCell>
                                                 <div className="font-medium">{service.name}</div>
