@@ -29,12 +29,16 @@ export default function Overview() {
         { month: "March", availability: 70 },
         { month: "April", availability: 50 },
         { month: "May", availability: 88 },
-        { month: "June", availability: 64 },
+        { month: "June", availability: 45 },
+        { month: "June", availability: 41 },
+        { month: "June", availability: 94 },
+        { month: "June", availability: 54 },
+        { month: "June", availability: 74 },
     ]
     const chartConfig = {
         availability: {
             label: "availability",
-            color: "hsl(var(--chart-3))",
+            color: "hsl(var(--chart-1))",
         },
         desk: {
             label: "Desktop",

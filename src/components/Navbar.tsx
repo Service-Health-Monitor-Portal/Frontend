@@ -101,8 +101,13 @@ const Navbar = () => {
                     <AvatarFallback>{userFallBack}</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>{email}</DropdownMenuLabel>
+                <DropdownMenuContent className='w-40 absolute right-0'>
+                  <DropdownMenuLabel>
+                    <div className='flex flex-col'>
+                    <h1>{user?.name}</h1>
+                    <h1 className='text-[11px] text-muted-foreground'>{email}</h1>
+                    </div>
+                  </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>Settings</DropdownMenuItem>
                   <DropdownMenuItem>Support</DropdownMenuItem>

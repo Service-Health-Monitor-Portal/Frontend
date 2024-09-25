@@ -1,21 +1,24 @@
+import ServiceCard from "@/components/ServiceCard";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import MultiSelector from "@/components/ui/multiselector";
+import useCustomQuery from "@/hooks/useCustomQuery";
+import { IBadges, IService } from "@/interfaces";
+import { AxiosError } from "axios";
 import { PlusCircle, Search } from "lucide-react";
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import { addService } from '../services/api';
-import ServiceCard from "@/components/ServiceCard";
-import useCustomQuery from "@/hooks/useCustomQuery";  // Import useCustomQuery
 
 export default function Services() {
     const [serviceName, setServiceName] = useState('');
-    const navigate = useNavigate();
+    const [serviceDescription, setServiceDescription] = useState('');
+    const [selectedBadges, setSelectedBadges] = useState<IBadges[]>([]);
     const token = localStorage.getItem("token");
 
-    const { data, isLoading, error } = useCustomQuery({
+    const { data: servicesData, isLoading, error } = useCustomQuery({
         queryKey: ['services'],
         url: `services`,
         pollInterval: 6000,
@@ -27,16 +30,34 @@ export default function Services() {
         },
     });
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const data = { name: serviceName };
+    const { data: badgesData, isLoading: isLoadingBadges, error: badgesError } = useCustomQuery({
+        queryKey: ['badges'],
+        url: `{{LogAnalyzerAPI}}/api/badges`,
+        config: {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        },
+    });
 
+    const handleAddService = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const data = {
+            name: serviceName,
+            description: serviceDescription,
+            badgeIds: selectedBadges.map((badge) => badge.id)
+        };
+    
         try {
-            const service = await addService(data);
+            await addService(data);
             toast.success('Service added successfully');
-            navigate(`/dashboard/${service.id}`);
-        } catch (error: any) {
-            toast.error(error.name || 'An error occurred');
+        } catch (err: unknown) {
+            console.log(err)
+            if (err instanceof AxiosError) {
+                toast(err?.response?.data);
+            } else {
+                toast('An error occurred while adding the service');
+            }
         }
     };
 
@@ -69,9 +90,9 @@ export default function Services() {
                                     Add new Service to track it.
                                 </DialogDescription>
                             </DialogHeader>
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={handleAddService}>
                                 <div className="grid gap-4 py-4">
-                                    <div className="grid items-center gap-4">
+                                    <div className="flex flex-col gap-4">
                                         <Label htmlFor="name" className="">
                                             Service Name
                                         </Label>
@@ -82,6 +103,27 @@ export default function Services() {
                                             onChange={(e) => setServiceName(e.target.value)}
                                             className="col-span-3"
                                         />
+                                        <Label htmlFor="description" className="">
+                                            Service Description
+                                        </Label>
+                                        <Input
+                                            id="description"
+                                            placeholder="description"
+                                            value={serviceDescription}
+                                            onChange={(e) => setServiceDescription(e.target.value)}
+                                            className="col-span-3"
+                                        />
+                                        <Label htmlFor="badges" className="">
+                                            Service Badges
+                                        </Label>
+
+                                        {isLoadingBadges ? (
+                                            <div>Loading badges...</div>
+                                        ) : badgesError ? (
+                                            <div>Error loading badges</div>
+                                        ) : (
+                                            <MultiSelector options={badgesData} setSelectedBadges={setSelectedBadges} />
+                                        )}
                                     </div>
                                 </div>
                                 <DialogFooter>
@@ -97,12 +139,13 @@ export default function Services() {
                 {isLoading && <div>Loading services...</div>}
                 {error && <div>Error loading services</div>}
 
-                {data?.map((service: any) => (
+                {servicesData?.map((service: IService) => (
                     <ServiceCard
                         key={service.id}
+                        id={service.id}
                         title={service.name}
-                        description={`Service for ${service.name}`}
-                        badges={["AWS", "Cloud", "Backend"]}
+                        description={service.description}
+                        badges={service.badges.map(badge => badge.name)}
                     />
                 ))}
             </div>

@@ -1,15 +1,11 @@
-import axios from 'axios';
+import { serviceApi } from './axios.config';
 
-export const addService = async (data: { name: string }) => {
-    try {
-        const response = await axios.post(`${process.env.LOG_ANALYZER_API_URL}/api/services`, data, {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-        });
-        return response.data;
-    } catch (err: any) {
-        throw err.response?.data || new Error('An error occurred while adding the service');
-    }
+export const addService = async (data: { name: string; description: string; badgeIds: number[] }) => {
+    const response = await serviceApi.post(``, data);
+    return response.data;
 };
+
+export const deleteService = async (id: number) => {
+    const response = await serviceApi.delete(`/${id}`)
+    return response.data;
+}

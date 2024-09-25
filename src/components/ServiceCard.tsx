@@ -2,14 +2,26 @@ import { Ellipsis } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { deleteService } from "@/services/api";
 
 interface IProps {
+    id: number;
     title: string;
     description?: string;
     badges?: string[];
 }
 
-export default function ServiceCard({ title, description, badges }: IProps) {
+export default function ServiceCard({ id, title, description, badges }: IProps) {
+
+    const handleDelete = async () => {
+        try{
+            await deleteService(id);
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
+
     return (
         <Card className="relative w-full">
             <CardHeader className="relative">
@@ -24,13 +36,13 @@ export default function ServiceCard({ title, description, badges }: IProps) {
                     <DropdownMenuContent className="absolute right-0 z-10">
                         <DropdownMenuItem>Update Service</DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>Delete Service</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleDelete}>Delete Service</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-2">
                 {badges?.map((badge, index) => (
-                    <Badge key={index}>{badge}</Badge>
+                    <Badge variant="secondary" key={index}>{badge}</Badge>
                 ))}
             </CardContent>
         </Card>
