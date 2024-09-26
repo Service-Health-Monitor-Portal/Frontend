@@ -33,7 +33,7 @@ export default function Services() {
 
     const { data: badgesData, isLoading: isLoadingBadges, error: badgesError } = useCustomQuery({
         queryKey: ['badges'],
-        url: `{{LogAnalyzerAPI}}/api/badges`,
+        url: `badges`,
         config: {
             headers: {
                 'Authorization': `Bearer ${token}`,
