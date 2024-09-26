@@ -7,22 +7,26 @@ import MultiSelector from "@/components/ui/multiselector";
 import useCustomQuery from "@/hooks/useCustomQuery";
 import { IBadges, IService } from "@/interfaces";
 import { AxiosError } from "axios";
-import { PlusCircle, Search } from "lucide-react";
+import { Loader2, PlusCircle, Search } from "lucide-react";
 import { FormEvent, useState } from 'react';
 import { toast } from 'react-toastify';
 import { addService } from '../services/api';
 
 export default function Services() {
+    const token = localStorage.getItem("token");
+
     const [serviceName, setServiceName] = useState('');
     const [serviceDescription, setServiceDescription] = useState('');
     const [selectedBadges, setSelectedBadges] = useState<IBadges[]>([]);
+    const [addServiceLoading, setAddServiceLoading] = useState(0)
+    const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
     const [searchInput, setSearchInput] = useState<string>("")
-    const token = localStorage.getItem("token");
+
+    const [version, setVersion] = useState(0);
 
     const { data: servicesData, isLoading, error } = useCustomQuery({
-        queryKey: ['services'],
+        queryKey: ['services', String(version)],
         url: `services`,
-        pollInterval: 6000,
         config: {
             headers: {
                 'ngrok-skip-browser-warning': '1',
@@ -33,7 +37,7 @@ export default function Services() {
 
     const { data: badgesData, isLoading: isLoadingBadges, error: badgesError } = useCustomQuery({
         queryKey: ['badges'],
-        url: `{{LogAnalyzerAPI}}/api/badges`,
+        url: `badges`,
         config: {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -48,10 +52,12 @@ export default function Services() {
             description: serviceDescription,
             badgeIds: selectedBadges.map((badge) => badge.id)
         };
-
+        setAddServiceLoading(1)
         try {
             await addService(data);
             toast.success('Service added successfully');
+            setIsAddDialogOpen(false);
+            setVersion((prev) => prev + 1);
         } catch (err: unknown) {
             console.log(err)
             if (err instanceof AxiosError) {
@@ -60,12 +66,17 @@ export default function Services() {
                 toast('An error occurred while adding the service');
             }
         }
+        finally {
+            setAddServiceLoading(0);
+        }
     };
 
     const filteredServices = servicesData?.filter((service: IService) =>
         service.name.toLowerCase().includes(searchInput.toLowerCase()) ||
         service?.description?.toLowerCase().includes(searchInput.toLowerCase())
     );
+
+    console.log(filteredServices)
 
     return (
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 md:px-20 lg:px-36">
@@ -82,7 +93,7 @@ export default function Services() {
                         />
                     </div>
 
-                    <Dialog>
+                    <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
                         <DialogTrigger asChild>
                             <Button size="sm" className="h-7 gap-1">
                                 <PlusCircle className="h-3.5 w-3.5" />
@@ -130,12 +141,17 @@ export default function Services() {
                                         ) : badgesError ? (
                                             <div>Error loading badges</div>
                                         ) : (
-                                            <MultiSelector options={badgesData} setSelectedBadges={setSelectedBadges} />
+                                            <MultiSelector options={badgesData} setSelectedBadges={setSelectedBadges} selectedBadges={selectedBadges} />
                                         )}
                                     </div>
                                 </div>
                                 <DialogFooter>
-                                    <Button type="submit">Add</Button>
+                                    <Button type="submit">
+                                        {addServiceLoading ? (
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        ) : (
+                                            "Update"
+                                        )}</Button>
                                 </DialogFooter>
                             </form>
                         </DialogContent>
@@ -153,7 +169,8 @@ export default function Services() {
                         id={service.id}
                         title={service.name}
                         description={service.description}
-                        badges={service.badges.map(badge => badge.name)}
+                        badges={service.badges}
+                        setVersion={setVersion}
                     />
                 ))}
             </div>

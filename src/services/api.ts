@@ -5,6 +5,11 @@ export const addService = async (data: { name: string; description: string; badg
     return response.data;
 };
 
+export const updateService = async (id: number, data: { name: string; description: string; badgeIds: number[] }) => {
+    const response = await serviceApi.patch(`/${id}`, data);
+    return response.data;
+};
+
 export const deleteService = async (id: number) => {
     const response = await serviceApi.delete(`/${id}`)
     return response.data;

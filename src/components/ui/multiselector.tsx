@@ -1,8 +1,5 @@
 "use client";
 
-import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -17,6 +14,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
 
 import { IBadges } from "@/interfaces";
 import { Badge } from "./badge";
@@ -24,10 +23,11 @@ import { Badge } from "./badge";
 interface IProps {
   options: IBadges[];
   setSelectedBadges: (badges: IBadges[]) => void;
+  selectedBadges: IBadges[]
 }
 
-export default function MultiSelector({ options, setSelectedBadges }: IProps) {
-  const [selectedBadges, setLocalSelectedBadges] = React.useState<IBadges[]>([]);
+export default function MultiSelector({ options, setSelectedBadges, selectedBadges }: IProps) {
+  console.log(setSelectedBadges)
 
   const handleSetValue = (badge: IBadges) => {
     let updatedBadges: IBadges[];
@@ -36,7 +36,6 @@ export default function MultiSelector({ options, setSelectedBadges }: IProps) {
     } else {
       updatedBadges = [...selectedBadges, badge];
     }
-    setLocalSelectedBadges(updatedBadges);
     setSelectedBadges(updatedBadges);
   };
 
