@@ -17,12 +17,12 @@ export default function Services() {
     const [serviceDescription, setServiceDescription] = useState('');
     const [selectedBadges, setSelectedBadges] = useState<IBadges[]>([]);
     const [searchInput, setSearchInput] = useState<string>("")
+    const [version, setVersion] = useState(0);
     const token = localStorage.getItem("token");
 
     const { data: servicesData, isLoading, error } = useCustomQuery({
-        queryKey: ['services'],
+        queryKey: ['services', String(version)],
         url: `services`,
-        pollInterval: 6000,
         config: {
             headers: {
                 'ngrok-skip-browser-warning': '1',
@@ -66,6 +66,8 @@ export default function Services() {
         service.name.toLowerCase().includes(searchInput.toLowerCase()) ||
         service?.description?.toLowerCase().includes(searchInput.toLowerCase())
     );
+
+    console.log(filteredServices)
 
     return (
         <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:py-8 md:px-20 lg:px-36">
@@ -154,6 +156,7 @@ export default function Services() {
                         title={service.name}
                         description={service.description}
                         badges={service.badges.map(badge => badge.name)}
+                        setVersion={setVersion}
                     />
                 ))}
             </div>
